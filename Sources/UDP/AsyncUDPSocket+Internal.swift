@@ -120,36 +120,70 @@ internal extension AsyncUDPSocket {
         switch interfaceName.lowercaseString {
 
         case "anyaddr", "anyaddress", "inaddr_any" :
-            //for Any address just setup iPV4
 
-            var sockaddr: sockaddr_in = sockaddr_in()
-            sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
-            sockaddr.sin_family         = sa_family_t(AF_INET)
-            sockaddr.sin_port           = port.bigEndian
-            sockaddr.sin_addr.s_addr    = INADDR_ANY.bigEndian  //INADDR_ANY
+            if family == AF_INET {
+                var sockaddr: sockaddr_in   = sockaddr_in()
+                sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
+                sockaddr.sin_family         = sa_family_t(AF_INET)
+                sockaddr.sin_port           = port.bigEndian
+                sockaddr.sin_addr.s_addr    = INADDR_ANY.bigEndian  //INADDR_ANY
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+
+            } else if family == AF_INET6 {
+                var sockaddr: sockaddr_in6  = sockaddr_in6()
+                sockaddr.sin6_len           = UInt8(sizeof(sockaddr_in6))
+                sockaddr.sin6_family        = sa_family_t(AF_INET6)
+                sockaddr.sin6_port          = port.bigEndian
+                sockaddr.sin6_addr          = in6addr_any
+
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+                
+            }
+
 
         case "loopback", "localhost" :
-            //for localhost address just setup iPV4
 
-            var sockaddr: sockaddr_in = sockaddr_in()
-            sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
-            sockaddr.sin_family         = sa_family_t(AF_INET)
-            sockaddr.sin_port           = port.bigEndian
-            sockaddr.sin_addr.s_addr    = INADDR_LOOPBACK.bigEndian
+            if family == AF_INET {
+                var sockaddr: sockaddr_in = sockaddr_in()
+                sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
+                sockaddr.sin_family         = sa_family_t(AF_INET)
+                sockaddr.sin_port           = port.bigEndian
+                sockaddr.sin_addr.s_addr    = INADDR_LOOPBACK.bigEndian
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
 
-            //TODO: add in support to get interfaces
+            } else if family == AF_INET6 {
+                var sockaddr: sockaddr_in6  = sockaddr_in6()
+                sockaddr.sin6_len           = UInt8(sizeof(sockaddr_in6))
+                sockaddr.sin6_family        = sa_family_t(AF_INET6)
+                sockaddr.sin6_port          = port.bigEndian
+                sockaddr.sin6_addr          = in6addr_loopback
+
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+                
+            }
+
         default:
-            var sockaddr: sockaddr_in = sockaddr_in()
-            sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
-            sockaddr.sin_family         = sa_family_t(AF_INET)
-            sockaddr.sin_port           = port.bigEndian
-            sockaddr.sin_addr.s_addr    = inet_addr(interfaceName)
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+            if family == AF_INET {
+                var sockaddr: sockaddr_in = sockaddr_in()
+                sockaddr.sin_len            = UInt8(sizeof(sockaddr_in))
+                sockaddr.sin_family         = sa_family_t(AF_INET)
+                sockaddr.sin_port           = port.bigEndian
+                sockaddr.sin_addr.s_addr    = inet_addr(interfaceName)
+
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+
+            } else if family == AF_INET6 {
+                var sockaddr: sockaddr_in6 = sockaddr_in6()
+                sockaddr.sin6_len            = UInt8(sizeof(sockaddr_in6))
+                sockaddr.sin6_family         = sa_family_t(AF_INET6)
+                sockaddr.sin6_port           = port.bigEndian
+                inet_pton(AF_INET6, interfaceName, &sockaddr.sin6_addr);
+
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+            }
 
         }
 
@@ -161,9 +195,17 @@ internal extension AsyncUDPSocket {
         var status: Int32 = 0
 
         let size = interface.length
-        let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in>.self)
 
-        status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
+        if self.addressFamily == AF_INET {
+            let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in>.self)
+
+            status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
+        } else if self.addressFamily == AF_INET6 {
+            let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in6>.self)
+
+            status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
+
+        }
 
         if status == -1 {
             closeSocketError()

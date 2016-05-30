@@ -25,44 +25,6 @@
 import XCTest
 @testable import SwiftAsyncSocket
 
-public extension NSMutableData {
-
-    /**
-     Appends a byte to NSMutableData
-
-     - parameter byte: A Byte to append to the NSMutableData
-     */
-    public func appendByte(byte: UInt8) {
-        var sendByte = byte
-
-        self.appendBytes(&sendByte, length: 1)
-    }
-    
-}
-
-/**
- Extension Extends String
-
- */
-extension String {
-
-    var hexaToInt		: Int		{ return Int(strtoul(self, nil, 16))    }
-    var hexaToDouble	: Double	{ return Double(strtoul(self, nil, 16)) }
-    var hexaToBinary	: String	{ return String(hexaToInt, radix: 2)    }
-    //    var intToHexa		: String	{ return String(toInt(), radix: 16)    }
-    //    var intToBinary		: String	{ return String(toInt(), radix: 2)     }
-    var binaryToInt		: Int		{ return Int(strtoul(self, nil, 2))     }
-    var binaryToDouble	: Double	{ return Double(strtoul(self, nil, 2))  }
-    var binaryToHexa	: String	{ return String(binaryToInt, radix: 16) }
-    var toBtyes			: [UInt8]	{ return [UInt8](self.utf8)             }
-    //    var toBtye			: UInt8		{ return UInt8(strtoul(self, nil, 1))	}
-    //    var toByte          : UInt8     { return UInt8(ascii: UnicodeScalar(self)) }
-    var toBtye          : UInt8     {return [UInt8](self.utf8)[0] } //I don't like but works for now
-    var floatValue		: Float		{ return (self as NSString).floatValue  }
-    
-}
-internal let DEFAULT_LISTEN_PORT: UInt16 = 17653
-
 
 class SwiftAsyncSocketTests: XCTestCase {
     
@@ -76,21 +38,63 @@ class SwiftAsyncSocketTests: XCTestCase {
         super.tearDown()
     }
 
+    func testBind() {
+        let UDP: AsyncUDPSocket = AsyncUDPSocket()
+
+        do {
+            try UDP.bindTo(54022, interface: "0.0.0.0")
+        } catch {
+            print("Errorrrror: \(error)")
+            XCTFail()
+
+        }
+
+    }
+
+    func testJoinMulticastIPV4() {
+        let UDP: AsyncUDPSocket = AsyncUDPSocket()
+
+        do {
+            try UDP.bindTo(54022, interface: "0.0.0.0")
+        } catch {
+            print("Errorrrror: \(error)")
+            XCTFail()
+
+        }
+
+        do {
+            try UDP.joinMulticast("239.78.80.110")
+        } catch {
+            print("Errorrrror: \(error)")
+            XCTFail()
+        }
+
+    }
+
+    func testJoinMulticastIPV6() {
+        let UDP: AsyncUDPSocket = AsyncUDPSocket()
+
+        do {
+            try UDP.bindTo(54022, interface: "2002:3289:d71c::1610:9fff:fed6:475d")
+        } catch {
+            print("Errorrrror: \(error)")
+            XCTFail()
+
+        }
+
+        do {
+            try UDP.joinMulticast("FF01:0:0:0:0:0:0:201")
+        } catch {
+            print("Errorrrror: \(error)")
+            XCTFail()
+        }
+        
+    }
+
     
     func testExample() {
 
         let expectation: XCTestExpectation = expectationWithDescription("test")
-
-        let waspMsg = NSMutableData()
-
-        waspMsg.appendByte("A".toBtye)
-        waspMsg.appendByte("N".toBtye)
-        waspMsg.appendByte(0x46)
-        waspMsg.appendByte(0)
-        waspMsg.appendByte(0)
-        waspMsg.appendByte(0xFF)
-
-        var count = 0
 
         let UDP: AsyncUDPSocket = AsyncUDPSocket()
 
@@ -101,12 +105,6 @@ class SwiftAsyncSocketTests: XCTestCase {
             }, receiveHandler: { (theSocket, data, host, port) -> Void in
 
                 print("\n Data: \(data) from: \(host) onPort:\(port)")
-
-                if count == 5 {
-                   // UDP.send(waspMsg, host: "192.168.240.1", port: DEFAULT_LISTEN_PORT)
-                    count = 0
-                }
-                count += 1
 
             })
 
@@ -124,15 +122,13 @@ class SwiftAsyncSocketTests: XCTestCase {
         UDP.addObserver(sendOb)
 
         do {
-//            try bob.bindTo(51113)
-            try UDP.bindTo(51113, interface: "0.0.0.0")
+            try UDP.bindTo(54022, interface: "0.0.0.0")
         } catch {
             print("Errorrrror: \(error)")
         }
 
         do {
-//            try bob.joinMulticast("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-            try UDP.joinMulticast("239.78.80.1")
+            try UDP.joinMulticast("239.78.80.110")
         } catch {
             print("Errorrrror: \(error)")
         }
@@ -142,14 +138,6 @@ class SwiftAsyncSocketTests: XCTestCase {
         } catch {
             print("Errorrrror: \(error)")
         }
-
-
-        let when = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
-        dispatch_after(when, dispatch_get_main_queue()) {
-//            bob.pauseReceiving()
-//            bob.send(waspMsg, host: "192.168.240.1", port: DEFAULT_LISTEN_PORT)
-        }
-
 
         if false {
             expectation.fulfill()
