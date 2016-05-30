@@ -34,6 +34,16 @@ public let kAsyncUDPSocketSendNoTag: Int = 0
 */
 public extension AsyncUDPSocket {
 
+    /**
+     Send Data
+
+     - parameter data: Data to Send
+     - parameter host: Host to Send Data to
+     - parameter port: Port on which to send
+     - parameter timeout: Time interval to consider send a failure
+     - parameter tag: A Tag to use on the send.  This can be examined when you get the observer
+
+     */
     public func send(data: NSData, host: String, port: UInt16, timeout: NSTimeInterval = kAsyncUDPSocketSendNoTimeout, tag: Int = kAsyncUDPSocketSendNoTag) {
 
         if data.length == 0 {
@@ -68,6 +78,7 @@ public extension AsyncUDPSocket {
 
 }
 
+//MARK: - Private
 
 private extension AsyncUDPSocket {
 
@@ -178,7 +189,7 @@ private extension AsyncUDPSocket {
 
 }
 
-//MARK: - PreSend
+//MARK: PreSend
 private extension AsyncUDPSocket {
 
 
@@ -230,7 +241,8 @@ private extension AsyncUDPSocket {
 
 }
 
-//MARK: - Sending
+//MARK: - Internal
+//MARK: Sending
 internal extension AsyncUDPSocket {
 
     internal func doSend() {
@@ -306,6 +318,7 @@ internal extension AsyncUDPSocket {
         }
     }
 
+    //MARK: Send Timeout
     private func setupSendTimer(timeout: NSTimeInterval) {
 
         assert(sendTimer == nil, "Invalid Logic")

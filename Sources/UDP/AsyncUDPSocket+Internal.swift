@@ -73,13 +73,11 @@ internal extension AsyncUDPSocket {
         internal static let didConnect: UdpSocketFlags              = UdpSocketFlags(rawValue: 1 << 3)
         internal static let receiveOnce: UdpSocketFlags             = UdpSocketFlags(rawValue: 1 << 4)
         internal static let receiveContinous: UdpSocketFlags        = UdpSocketFlags(rawValue: 1 << 5)
-        internal static let ipv4Deactive: UdpSocketFlags            = UdpSocketFlags(rawValue: 1 << 6)
-        internal static let ipv6Deactive: UdpSocketFlags            = UdpSocketFlags(rawValue: 1 << 7)
-        internal static let sendSourceSuspend: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 8)
-        internal static let recvSourceSuspend: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 10)
-        internal static let sockCanAccept: UdpSocketFlags           = UdpSocketFlags(rawValue: 1 << 12)
-        internal static let forbidSendReceive: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 14)
-        internal static let closeAfterSend: UdpSocketFlags          = UdpSocketFlags(rawValue: 1 << 15)
+        internal static let sendSourceSuspend: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 6)
+        internal static let recvSourceSuspend: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 7)
+        internal static let sockCanAccept: UdpSocketFlags           = UdpSocketFlags(rawValue: 1 << 8)
+        internal static let forbidSendReceive: UdpSocketFlags       = UdpSocketFlags(rawValue: 1 << 9)
+        internal static let closeAfterSend: UdpSocketFlags          = UdpSocketFlags(rawValue: 1 << 10)
 
     }
 

@@ -46,6 +46,7 @@ public struct UDPReceiveObserver: AsyncUDPSocketObserver {
             self.dispatchQueue = onQueue
             self.uuid = NSUUID()
     }
+
     //MARK: - Observers
 
     public func sockDidClose(socket: AsyncUDPSocket, error: ErrorType?) {

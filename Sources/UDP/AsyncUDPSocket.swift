@@ -97,7 +97,7 @@ public class AsyncUDPSocket {
 
     internal var sendTimer: dispatch_source_t?
 
-    internal let dispatchQueueKey = "UPDSocketQueue"
+    internal let dispatchQueueKey = "UDPSocketQueue"
 
     static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, UnsafePointer<Void>.self)     // some unique pointer
     private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
@@ -115,7 +115,7 @@ public class AsyncUDPSocket {
 
         self.currentSend = nil
 
-        socketQueue = dispatch_queue_create("UPDSocketQueue", DISPATCH_QUEUE_SERIAL)
+        socketQueue = dispatch_queue_create(dispatchQueueKey, DISPATCH_QUEUE_SERIAL)
 
         dispatch_queue_set_specific(socketQueue, AsyncUDPSocket.udpQueueIDKey, udpQueueID, nil)
 
@@ -151,7 +151,7 @@ public func !=(lhs: AsyncUDPSocket.SendReceiveErrors, rhs: AsyncUDPSocket.SendRe
     return lhs._code != rhs._code
 }
 
-//MARK: - Observer {
+//MARK: - Observer
 public extension AsyncUDPSocket {
 
     /**
