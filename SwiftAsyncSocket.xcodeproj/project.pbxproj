@@ -80,6 +80,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		046458E51CFCD61A005B0CDE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		046458E61CFCD61A005B0CDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		04A970B11C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Internal.swift"; sourceTree = "<group>"; };
 		04A970BA1C1DF8FA006ACBC7 /* AsyncUDPSocket+Multicast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Multicast.swift"; sourceTree = "<group>"; };
 		04A970BE1C1E1D85006ACBC7 /* AsyncUDPSocket+ReceiveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+ReceiveData.swift"; sourceTree = "<group>"; };
@@ -181,6 +183,8 @@
 		04F04A4D1C1A519900B94EFD = {
 			isa = PBXGroup;
 			children = (
+				046458E51CFCD61A005B0CDE /* LICENSE */,
+				046458E61CFCD61A005B0CDE /* README.md */,
 				04F04A591C1A519900B94EFD /* Sources */,
 				04F04A651C1A519A00B94EFD /* SwiftAsyncSocketTests */,
 				04F04A581C1A519900B94EFD /* Products */,
