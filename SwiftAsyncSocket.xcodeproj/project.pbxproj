@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046261AA1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
+		046261AB1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
+		046261AC1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
 		04A970B21C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A970B11C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift */; };
 		04A970B31C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A970B11C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift */; };
 		04A970B41C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A970B11C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift */; };
@@ -80,6 +83,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		046261A91D09DD8600CBFF0F /* Shims.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shims.swift; sourceTree = "<group>"; };
 		046458E51CFCD61A005B0CDE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		046458E61CFCD61A005B0CDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		04A970B11C1BDE8D006ACBC7 /* AsyncUDPSocket+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Internal.swift"; sourceTree = "<group>"; };
@@ -150,13 +154,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		049BE83F1C3042A500431B48 /* SwiftModules */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SwiftModules;
-			sourceTree = SOURCE_ROOT;
-		};
 		04A970B51C1DF8C5006ACBC7 /* UDP */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,8 +204,8 @@
 		04F04A591C1A519900B94EFD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				049BE83F1C3042A500431B48 /* SwiftModules */,
 				04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */,
+				046261A91D09DD8600CBFF0F /* Shims.swift */,
 				04A970B51C1DF8C5006ACBC7 /* UDP */,
 			);
 			path = Sources;
@@ -471,6 +468,7 @@
 				04A970BF1C1E1D85006ACBC7 /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				04F04AAC1C1B0EB000B94EFD /* AsyncUDPSocket.swift in Sources */,
 				04C2D5D21C2EF64000658D95 /* AsyncUDPSocket+SendData.swift in Sources */,
+				046261AA1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				04C2D5DB1C2F412400658D95 /* UDPSendObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,6 +492,7 @@
 				04A970C01C1E1D85006ACBC7 /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				04F04AAD1C1B0EB000B94EFD /* AsyncUDPSocket.swift in Sources */,
 				04C2D5D31C2EF64000658D95 /* AsyncUDPSocket+SendData.swift in Sources */,
+				046261AB1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				04C2D5DC1C2F412400658D95 /* UDPSendObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,6 +516,7 @@
 				04A970C11C1E1D85006ACBC7 /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				04F04AAE1C1B0EB000B94EFD /* AsyncUDPSocket.swift in Sources */,
 				04C2D5D41C2EF64000658D95 /* AsyncUDPSocket+SendData.swift in Sources */,
+				046261AC1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				04C2D5DD1C2F412400658D95 /* UDPSendObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

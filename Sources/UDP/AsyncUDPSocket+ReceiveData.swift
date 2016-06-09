@@ -23,7 +23,11 @@
 //  THE SOFTWARE.
 
 import Foundation
-import Darwin
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 /**
  ReceiveData Extends AsyncUDPSocket
@@ -192,7 +196,12 @@ internal extension AsyncUDPSocket {
         //Socket IO
         var socketAddress = sockaddr_storage()
         var socketAddressLength = socklen_t(sizeof(sockaddr_storage.self))
-        let response = [UInt8](count: maxReceiveSize, repeatedValue: 0)
+        #if swift(>=3.0)
+            let response = [UInt8](repeating: 0, count: maxReceiveSize)
+        #else
+            let response = [UInt8](count: maxReceiveSize, repeatedValue: 0)
+        #endif
+
         guard let source = self.receiveSource else { return }
         let UDPSocket = Int32(dispatch_source_get_handle(source))
 
@@ -216,11 +225,19 @@ internal extension AsyncUDPSocket {
             }
 
         } else {
-            guard let endpoint = withUnsafePointer(&socketAddress, { self.getEndpointFromSocketAddress(UnsafePointer($0)) }) else {
+            #if swift(>=3.0)
+                guard let endpoint = withUnsafePointer(&socketAddress, { self.getEndpointFromSocketAddress(socketAddressPointer: UnsafePointer($0)) }) else {
+                    NSLog("Failed to get the address and port from the socket address received from recvfrom")
+                    //            closeSocketFinal()
+                    return
+                }
+            #else
+                guard let endpoint = withUnsafePointer(&socketAddress, { self.getEndpointFromSocketAddress(UnsafePointer($0)) }) else {
                 NSLog("Failed to get the address and port from the socket address received from recvfrom")
                 //            closeSocketFinal()
                 return
-            }
+                }
+            #endif
 
 
             let responseDatagram = NSData(bytes: UnsafePointer<Void>(response), length: bytesRead)
@@ -232,7 +249,12 @@ internal extension AsyncUDPSocket {
             }
 
             //no errors go ahead and notify
-            notifyRecieveDelegate(responseDatagram, fromHost: endpoint.host, port: endpoint.port)
+            #if swift(>=3.0)
+                notifyRecieveDelegate(data: responseDatagram, fromHost: endpoint.host, port: endpoint.port)
+            #else
+                notifyRecieveDelegate(responseDatagram, fromHost: endpoint.host, port: endpoint.port)
+            #endif
+
             notifyDelegate = true
         }
 
@@ -264,7 +286,11 @@ internal extension AsyncUDPSocket {
 
         for observer in observers {
             //Observer decides which queue it will send back on
-            observer.socketDidReceive(self, data: data, fromHost: fromHost, onPort: port)
+            #if swift(>=3.0)
+                observer.socketDidReceive(socket: self, data: data, fromHost: fromHost, onPort: port)
+            #else
+                observer.socketDidReceive(self, data: data, fromHost: fromHost, onPort: port)
+            #endif
         }
     }
 }
@@ -275,18 +301,33 @@ private extension AsyncUDPSocket {
     /// Convert a sockaddr structure into an IP address string and port.
     func getEndpointFromSocketAddress(socketAddressPointer: UnsafePointer<sockaddr>) -> (host: String, port: UInt16)? {
         
-        let family = Int32(socketAddressPointer.memory.sa_family)
+        #if swift(>=3.0)
+            let family = Int32(socketAddressPointer.pointee.sa_family)
+        #else
+            let family = Int32(socketAddressPointer.memory.sa_family)
+        #endif
+
 
         switch family {
         case AF_INET:
 
-            var socketAddressInet = UnsafePointer<sockaddr_in>(socketAddressPointer).memory
-            let length = Int(NI_MAXHOST)
-            let buffer = UnsafeMutablePointer<Int8>.alloc(Int(1))
-            defer {
-                buffer.destroy()
-                buffer.dealloc(1)
-            }
+            #if swift(>=3.0)
+                var socketAddressInet = UnsafePointer<sockaddr_in>(socketAddressPointer).pointee
+                let length = Int(NI_MAXHOST)
+                let buffer = UnsafeMutablePointer<Int8>.init(bitPattern: 0)
+                defer {
+                    buffer?.deinitialize()
+                    buffer?.deallocateCapacity(1)
+                }
+            #else
+                var socketAddressInet = UnsafePointer<sockaddr_in>(socketAddressPointer).memory
+                let length = Int(NI_MAXHOST)
+                let buffer = UnsafeMutablePointer<Int8>.alloc(Int(1))
+                defer {
+                    buffer.destroy()
+                    buffer.dealloc(1)
+                }
+            #endif
 
             var hostCString = UnsafePointer<Int8>(nil)
 
@@ -295,29 +336,59 @@ private extension AsyncUDPSocket {
             let port = UInt16(socketAddressInet.sin_port).byteSwapped
             let newHost = UnsafePointer<CChar>(hostCString)
 
-            if let host = String.fromCString(newHost) {
-                return (host, port)
-            } else {
-                return nil
-            }
+            #if swift(>=3.0)
+                if let host = newHost {
+                    return (String(cString: host), port)
+                } else {
+                    return nil
+                }
+            #else
+                if let host = String.fromCString(newHost) {
+                    return (host, port)
+                } else {
+                    return nil
+                }
+            #endif
+
 
         case AF_INET6:
-            var socketAddressInet6 = UnsafePointer<sockaddr_in6>(socketAddressPointer).memory
             let length = Int(INET6_ADDRSTRLEN) + 2
-            let buffer = UnsafeMutablePointer<Int8>.alloc(Int(1))
-            defer {
-                buffer.destroy()
-                buffer.dealloc(1)
-            }
+            #if swift(>=3.0)
+                var socketAddressInet6 = UnsafePointer<sockaddr_in6>(socketAddressPointer).pointee
+                let buffer = UnsafeMutablePointer<Int8>.init(bitPattern: 0)
+
+                defer {
+                    buffer?.deinitialize()
+                    buffer?.deallocateCapacity(1)
+                }
+            #else
+                var socketAddressInet6 = UnsafePointer<sockaddr_in6>(socketAddressPointer).memory
+                let buffer = UnsafeMutablePointer<Int8>.alloc(Int(1))
+
+                defer {
+                    buffer.destroy()
+                    buffer.dealloc(1)
+                }
+            #endif
+
 
             let hostCString = inet_ntop(AF_INET6, &socketAddressInet6.sin6_addr, buffer, socklen_t(length))
             let port = UInt16(socketAddressInet6.sin6_port).byteSwapped
 
-            if let host = String.fromCString(hostCString) {
-                return (host, port)
-            } else {
-                return nil
-            }
+            #if swift(>=3.0)
+                if let host = hostCString {
+                    return (String(cString: host), port)
+                } else {
+                    return nil
+                }
+            #else
+                if let host = String.fromCString(newHost) {
+                    return (host, port)
+                } else {
+                    return nil
+                }
+
+            #endif
 
         default:
             return nil

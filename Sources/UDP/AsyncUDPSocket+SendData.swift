@@ -53,21 +53,43 @@ public extension AsyncUDPSocket {
         let packet = AsyncUDPSendPacket(data: data, timeout: timeout, tag: tag)
         packet.resolveInProgress = true
 
-        resolve(host, port: port) { (address, error) -> Void in
 
-            packet.resolveInProgress = false
-            packet.resolvedAddress = address
-            packet.resolvedError = error
+        #if swift(>=3.0)
+            resolve(host: host, port: port) { (address, error) -> Void in
 
-            let family: Int32 = host.characters.split(":").count > 1 ? AF_INET6 : AF_INET
-            packet.resolvedFamily = family
+                packet.resolveInProgress = false
+                packet.resolvedAddress = address
+                packet.resolvedError = error
 
-            if let curSend = self.currentSend {
-                if packet == curSend {
-                    self.doPreSend()
+                let family: Int32 = host.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
+
+                packet.resolvedFamily = family
+
+                if let curSend = self.currentSend {
+                    if packet == curSend {
+                        self.doPreSend()
+                    }
                 }
             }
-        }
+        #else
+            resolve(host, port: port) { (address, error) -> Void in
+
+                packet.resolveInProgress = false
+                packet.resolvedAddress = address
+                packet.resolvedError = error
+
+                let family: Int32 = host.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+
+                packet.resolvedFamily = family
+
+                if let curSend = self.currentSend {
+                    if packet == curSend {
+                        self.doPreSend()
+                    }
+                }
+            }
+        #endif
+
 
         dispatch_async(self.socketQueue) { () -> Void in
             self.sendQueue.append(packet)
@@ -85,15 +107,21 @@ private extension AsyncUDPSocket {
 
     private func resolve(host: String, port: UInt16, handler: (address: UnsafePointer<sockaddr>?, error: SendReceiveErrors?) -> Void) {
 
-        let globalConcurrentQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        let globalConcurrentQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)!
 
 
         dispatch_async(globalConcurrentQ) { () -> Void in
-            var addrInfo: UnsafeMutablePointer<addrinfo> = UnsafeMutablePointer<addrinfo>(nil)
-
-            let family: Int32 = host.characters.split(":").count > 1 ? AF_INET6 : AF_INET
-            let hostStr = host.cStringUsingEncoding(NSUTF8StringEncoding)
-            let portStr = String(port).cStringUsingEncoding(NSUTF8StringEncoding)
+            #if swift(>=3.0)
+                var addrInfo: UnsafeMutablePointer<addrinfo>?
+                let family: Int32 = host.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
+                let hostStr = host.cString(using: NSUTF8StringEncoding)
+                let portStr = String(port).cString(using: NSUTF8StringEncoding)
+            #else
+                var addrInfo: UnsafeMutablePointer<addrinfo> = UnsafeMutablePointer<addrinfo>(nil)
+                let family: Int32 = host.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+                let hostStr = host.cStringUsingEncoding(NSUTF8StringEncoding)
+                let portStr = String(port).cStringUsingEncoding(NSUTF8StringEncoding)
+            #endif
 
 
             var hints = addrinfo(
@@ -110,16 +138,33 @@ private extension AsyncUDPSocket {
 
             if gaiError != 0 {
 
-                if let errorMsg = String.fromCString(gai_strerror(gaiError)) {
+
+                #if swift(>=3.0)
+                    let errorMsg = String(cString: gai_strerror(gaiError))
+
                     dispatch_async(self.socketQueue) { () -> Void in
                         handler(address: nil, error: SendReceiveErrors.ResolveIssue(msg: errorMsg))
                     }
-                }
+                #else
+                    if let errorMsg = String.fromCString(gai_strerror(gaiError)) {
+                        dispatch_async(self.socketQueue) { () -> Void in
+                            handler(address: nil, error: SendReceiveErrors.ResolveIssue(msg: errorMsg))
+                        }
+                    }
+                #endif
+
 
             } else {
 
                 dispatch_async(self.socketQueue) { () -> Void in
-                    handler(address: addrInfo.memory.ai_addr, error: nil)
+
+                    #if swift(>=3.0)
+                        handler(address: addrInfo?.pointee.ai_addr, error: nil)
+                    #else
+                        handler(address: addrInfo.memory.ai_addr, error: nil)
+                    #endif
+                    
+
                     freeaddrinfo(addrInfo)
                     
                 }
@@ -143,18 +188,33 @@ private extension AsyncUDPSocket {
             guard flags.contains(.didCreateSockets) == true else {
                 //throw error here
                 let err = SendReceiveErrors.NotBound(msg: "Socket Must be bound and created prior to sending")
-                notifyDidNotSend(err, tag: kAsyncUDPSocketSendNoTag)
+                #if swift(>=3.0)
+                    notifyDidNotSend(error: err, tag: kAsyncUDPSocketSendNoTag)
+                #else
+                    notifyDidNotSend(err, tag: kAsyncUDPSocketSendNoTag)
+                #endif
+
                 return
             }
 
             while sendQueue.count > 0 {
 
                 currentSend = sendQueue.first
-                sendQueue.removeAtIndex(0)
+                #if swift(>=3.0)
+                    sendQueue.remove(at: 0)
+                #else
+                    sendQueue.removeAtIndex(0)
+                #endif
+
 
                 //Check for Errors in resolv
                 if currentSend?.resolvedError != nil {
-                    notifyDidNotSend((currentSend?.resolvedError)!, tag: kAsyncUDPSocketSendNoTag)
+                    #if swift(>=3.0)
+                        notifyDidNotSend(error: (currentSend?.resolvedError)!, tag: kAsyncUDPSocketSendNoTag)
+                    #else
+                        notifyDidNotSend((currentSend?.resolvedError)!, tag: kAsyncUDPSocketSendNoTag)
+                    #endif
+
                     currentSend = nil
                     continue
                 } else {
@@ -166,7 +226,12 @@ private extension AsyncUDPSocket {
             }
 
             if currentSend == nil && flags.contains(.closeAfterSend) {
-                self.closeSocketError(SocketCloseErrors.Error(msg: "Nothing more to Send"))
+                #if swift(>=3.0)
+                    self.closeSocketError(error: SocketCloseErrors.Error(msg: "Nothing more to Send"))
+                #else
+                    self.closeSocketError(SocketCloseErrors.Error(msg: "Nothing more to Send"))
+                #endif
+
             }
         }
     }
@@ -175,7 +240,12 @@ private extension AsyncUDPSocket {
 
         for observer in observers {
             //Observer decides which queue it will send back on
-            observer.socketDidNotSend(self, tag: tag, error: error)
+            #if swift(>=3.0)
+                observer.socketDidNotSend(socket: self, tag: tag, error: error)
+            #else
+                observer.socketDidNotSend(self, tag: tag, error: error)
+            #endif
+
         }
     }
 
@@ -183,7 +253,12 @@ private extension AsyncUDPSocket {
 
         for observer in observers {
             //Observer decides which queue it will send back on
-            observer.socketDidSend(self, tag: tag)
+            #if swift(>=3.0)
+                observer.socketDidSend(socket: self, tag: tag)
+            #else
+                observer.socketDidSend(self, tag: tag)
+            #endif
+
         }
     }
 
@@ -218,7 +293,12 @@ private extension AsyncUDPSocket {
         }
 
         if let errors = error {
-            notifyDidNotSend(errors, tag: (currentSend?.tag)!)
+            #if swift(>=3.0)
+                notifyDidNotSend(error: errors, tag: (currentSend?.tag)!)
+            #else
+                notifyDidNotSend(errors, tag: (currentSend?.tag)!)
+            #endif
+
             endCurrentSend()
             maybeDequeueSend()
             return
@@ -255,7 +335,12 @@ internal extension AsyncUDPSocket {
         let bufferSize = (currentSend?.buffer.length)!
         let dst = (currentSend?.resolvedAddress)!
 
-        result = sendto(sockfd, buffer, bufferSize, 0, dst, socklen_t(dst.memory.sa_len) )
+        #if swift(>=3.0)
+            result = sendto(sockfd, buffer, bufferSize, 0, dst, socklen_t(dst.pointee.sa_len) )
+        #else
+            result = sendto(sockfd, buffer, bufferSize, 0, dst, socklen_t(dst.memory.sa_len) )
+        #endif
+
 
         //Check Results
         var waitingForSocket: Bool = false
@@ -279,13 +364,29 @@ internal extension AsyncUDPSocket {
             }
 
             if sendTimer == nil && currentSend?.timeout >= 0.0 {
-                setupSendTimer((currentSend?.timeout)!)
+                #if swift(>=3.0)
+                    setupSendTimer(timeout: (currentSend?.timeout)!)
+                #else
+                    setupSendTimer((currentSend?.timeout)!)
+                #endif
+
             }
         } else if socketError != nil {
-            closeSocketError(socketError)
+            #if swift(>=3.0)
+                closeSocketError(error: socketError)
+            #else
+                closeSocketError(socketError)
+            #endif
+
         } else {
             let tag = (currentSend?.tag)!
-            notifyDidSend(tag)
+
+            #if swift(>=3.0)
+                notifyDidSend(tag: tag)
+            #else
+                notifyDidSend(tag)
+            #endif
+
             endCurrentSend()
             maybeDequeueSend()
         }
@@ -340,7 +441,12 @@ internal extension AsyncUDPSocket {
     private func doSendTimout() {
         let error = SendReceiveErrors.SendTimout(msg: "Send operation timed out")
 
-        notifyDidNotSend(error, tag: (currentSend?.tag)!)
+        #if swift(>=3.0)
+            notifyDidNotSend(error: error, tag: (currentSend?.tag)!)
+        #else
+            notifyDidNotSend(error, tag: (currentSend?.tag)!)
+        #endif
+
         endCurrentSend()
         maybeDequeueSend()
 

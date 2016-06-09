@@ -31,13 +31,13 @@ import Foundation
 public struct UDPReceiveObserver: AsyncUDPSocketObserver {
 
     private let receiveHandler: ((AsyncUDPSocket, NSData, String, UInt16) -> Void)?
-    private let closeHandler: ((socket: AsyncUDPSocket, error: ErrorType?) -> Void)?
+    private let closeHandler: ((socket: AsyncUDPSocket, error: ASErrorType?) -> Void)?
     private let dispatchQueue: dispatch_queue_t
 
     private(set) public var uuid: NSUUID
 
     public init(
-        closeHandler: ((socket: AsyncUDPSocket, error: ErrorType?) -> Void)? = nil,
+        closeHandler: ((socket: AsyncUDPSocket, error: ASErrorType?) -> Void)? = nil,
         receiveHandler: ((socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16) -> Void)? = nil,
         onQueue: dispatch_queue_t = dispatch_get_main_queue()
         ){
@@ -49,7 +49,7 @@ public struct UDPReceiveObserver: AsyncUDPSocketObserver {
 
     //MARK: - Observers
 
-    public func sockDidClose(socket: AsyncUDPSocket, error: ErrorType?) {
+    public func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?) {
         dispatch_async(dispatchQueue) { () -> Void in
             self.closeHandler?(socket: socket, error: error)
         }

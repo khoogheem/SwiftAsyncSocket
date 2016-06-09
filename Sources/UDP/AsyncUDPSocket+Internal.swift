@@ -23,8 +23,11 @@
 //  THE SOFTWARE.
 
 import Foundation
-import Darwin
-
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 internal class AsyncUDPSendPacket {
 
@@ -62,7 +65,7 @@ internal extension AsyncUDPSocket {
     /**
      UPD sockt Flags.
      */
-    internal struct UdpSocketFlags: OptionSetType {
+    internal struct UdpSocketFlags: ASOptionSet {
         internal let rawValue: Int
         internal init(rawValue: Int) { self.rawValue = rawValue }
 
@@ -115,7 +118,13 @@ internal extension AsyncUDPSocket {
 
         var interfaceData: NSData?
 
-        switch interfaceName.lowercaseString {
+        #if swift(>=3.0)
+            let iName = interfaceName.lowercased()
+        #else
+            let iName = interfaceName.lowercaseString
+        #endif
+
+        switch iName {
 
         case "anyaddr", "anyaddress", "inaddr_any" :
 
@@ -195,11 +204,19 @@ internal extension AsyncUDPSocket {
         let size = interface.length
 
         if self.addressFamily == AF_INET {
-            let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in>.self)
+            #if swift(>=3.0)
+                let sockPtr = unsafeBitCast(interface.bytes, to: UnsafePointer<sockaddr_in>.self)
+            #else
+                let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in>.self)
+            #endif
 
             status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
         } else if self.addressFamily == AF_INET6 {
-            let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in6>.self)
+            #if swift(>=3.0)
+                let sockPtr = unsafeBitCast(interface.bytes, to: UnsafePointer<sockaddr_in6>.self)
+            #else
+                let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in6>.self)
+            #endif
 
             status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
 
@@ -253,9 +270,15 @@ internal extension AsyncUDPSocket {
         var status: Int32 = 0
 
         //This comes in from our Network Bridge
-        guard setSocketNonBlocking(sockfd) else {
-            throw BindErrors.SocketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
-        }
+        #if swift(>=3.0)
+            guard setSocketNonBlocking(socket: sockfd) else {
+                throw BindErrors.SocketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
+            }
+        #else
+            guard setSocketNonBlocking(sockfd) else {
+                throw BindErrors.SocketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
+            }
+        #endif
 
         //Set the Socket Options
 
@@ -385,7 +408,7 @@ internal extension AsyncUDPSocket {
 internal extension AsyncUDPSocket {
 
 
-    internal func closeSocketError(error: ErrorType? = nil) {
+    internal func closeSocketError(error: ASErrorType? = nil) {
 
         guard isCurrentQueue == true else {
             assertionFailure("Must be dispatched on Socket Queue")
@@ -401,7 +424,11 @@ internal extension AsyncUDPSocket {
             //notify close!
             for observer in observers {
                 //Observer decides which queue it will send back on
-                observer.sockDidClose(self, error: error)
+                #if swift(>=3.0)
+                    observer.sockDidClose(socket: self, error: error)
+                #else
+                    observer.sockDidClose(self, error: error)
+                #endif
             }
         }
 

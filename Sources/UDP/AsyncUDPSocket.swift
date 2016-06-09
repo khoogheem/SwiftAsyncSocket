@@ -23,7 +23,11 @@
 //  THE SOFTWARE.
 
 import Foundation
-import Darwin
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 let INADDR_LOOPBACK = UInt32(0x7f000001)
 let INADDR_ANY = UInt32(0x00000000)
@@ -32,7 +36,7 @@ let INADDR_ANY = UInt32(0x00000000)
 public class AsyncUDPSocket {
 
     //Public
-    public enum BindErrors: ErrorType {
+    public enum BindErrors: ASErrorType {
         case AlreadyBound(msg: String)
         case AlreadyConnected(msg: String)
         case UnknownInterface(msg: String)
@@ -41,11 +45,11 @@ public class AsyncUDPSocket {
         case SocketCreateError(msg: String)
     }
 
-    public enum MulticastErrors: ErrorType {
+    public enum MulticastErrors: ASErrorType {
         case JoinError(msg: String)
     }
 
-    public enum SendReceiveErrors: ErrorType {
+    public enum SendReceiveErrors: ASErrorType {
         case AlreadyReceiving(msg: String)
         case NotBound(msg: String)
         case ResolveIssue(msg: String)
@@ -53,14 +57,14 @@ public class AsyncUDPSocket {
         case SendTimout(msg: String)
     }
 
-    public enum SocketCloseErrors: ErrorType {
+    public enum SocketCloseErrors: ASErrorType {
         case Error(msg: String)
     }
 
     /**
      Socket Bind Options
     */
-    public struct BindOptions: OptionSetType {
+    public struct BindOptions: ASOptionSet {
         public let rawValue: Int
         public init(rawValue: Int) { self.rawValue = rawValue }
 
@@ -99,11 +103,18 @@ public class AsyncUDPSocket {
 
     internal let dispatchQueueKey = "UDPSocketQueue"
 
+    #if swift(>=3.0)
+    static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, to: UnsafePointer<Void>.self)     // some unique pointer
+    private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
+        unsafeBitCast(self, to: UnsafeMutablePointer<Void>.self)   // pointer to self
+        }()
+    #else
     static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, UnsafePointer<Void>.self)     // some unique pointer
     private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
         unsafeBitCast(self, UnsafeMutablePointer<Void>.self)   // pointer to self
     }()
-
+    #endif
+    
     public init() {
 
         self.flags = UdpSocketFlags()
@@ -167,11 +178,20 @@ public extension AsyncUDPSocket {
 
     public func removeObserver(observer: AsyncUDPSocketObserver) {
 
-        for (idx, obsvr) in observers.enumerate() {
-            if obsvr == observer {
-                observers.removeAtIndex(idx)
+        #if swift(>=3.0)
+            for (idx, obsvr) in observers.enumerated() {
+                if obsvr == observer {
+                    observers.remove(at: idx)
+                }
             }
-        }
+        #else
+            for (idx, obsvr) in observers.enumerate() {
+                if obsvr == observer {
+                    observers.removeAtIndex(idx)
+                }
+            }
+        #endif
+
     }
 }
 
@@ -201,7 +221,12 @@ public extension AsyncUDPSocket {
             self.flags.insert(.closeAfterSend)
 
             if self.currentSend == nil && self.sendQueue.count == 0 {
-                self.closeSocketError(SocketCloseErrors.Error(msg: "Closing with nothing more to Send"))
+                #if swift(>=3.0)
+                    self.closeSocketError(error: SocketCloseErrors.Error(msg: "Closing with nothing more to Send"))
+                #else
+                    self.closeSocketError(SocketCloseErrors.Error(msg: "Closing with nothing more to Send"))
+                #endif
+
             }
         }
 
@@ -222,7 +247,11 @@ public extension AsyncUDPSocket {
         var errorCode: BindErrors?
 
         let block: dispatch_block_t = {
-            self.addressFamily = _interface.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+            #if swift(>=3.0)
+                self.addressFamily = _interface.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
+            #else
+                self.addressFamily = _interface.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+            #endif
 
             do {
                 try self.preBind()
@@ -233,7 +262,12 @@ public extension AsyncUDPSocket {
                 return
             }
 
-            let interfaceData = self.createInterface(_interface, port: port, family: self.addressFamily)
+            #if swift(>=3.0)
+                let interfaceData = self.createInterface(interfaceName: _interface, port: port, family: self.addressFamily)
+            #else
+                let interfaceData = self.createInterface(_interface, port: port, family: self.addressFamily)
+            #endif
+
 
             if interfaceData == nil {
                 let error = BindErrors.UnknownInterface(msg: "Unknown interface. Specify valid interface by name (e.g. 'anyaddr', 'en0') or IP address.")
@@ -243,7 +277,12 @@ public extension AsyncUDPSocket {
             }
 
             do {
-                try self.createSocket(self.addressFamily, options: option)
+                #if swift(>=3.0)
+                    try self.createSocket(family: self.addressFamily, options: option)
+                #else
+                    try self.createSocket(self.addressFamily, options: option)
+                #endif
+
             } catch{
                 print(error)
                 errorCode = (error as? BindErrors)!
@@ -251,7 +290,11 @@ public extension AsyncUDPSocket {
             }
 
             do {
-                try self.boundInterface(interfaceData!)
+                #if swift(>=3.0)
+                    try self.boundInterface(interface: interfaceData!)
+                #else
+                    try self.boundInterface(interfaceData!)
+                #endif
 
             } catch {
 //                NSLog("Error: \(error)")

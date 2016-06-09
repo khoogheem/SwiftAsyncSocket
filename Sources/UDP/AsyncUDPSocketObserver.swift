@@ -34,7 +34,8 @@ public protocol AsyncUDPSocketObserver {
 
     func socketDidReceive(socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16)
 
-    func sockDidClose(socket: AsyncUDPSocket, error: ErrorType?)
+    func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?)
+
 
     //Send Errors
     func socketDidNotSend(socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors)
@@ -44,7 +45,11 @@ public protocol AsyncUDPSocketObserver {
 }
 
 public func ==(lhs: AsyncUDPSocketObserver, rhs: AsyncUDPSocketObserver) -> Bool {
-    return lhs.uuid.UUIDString == rhs.uuid.UUIDString
+    #if swift(>=3.0)
+        return lhs.uuid.uuidString == rhs.uuid.uuidString
+    #else
+        return lhs.uuid.UUIDString == rhs.uuid.UUIDString
+    #endif
 }
 
 
@@ -56,7 +61,12 @@ extension AsyncUDPSocketObserver {
 
     public var hashValue: Int {
         get {
-            return uuid.UUIDString.hashValue
+            #if swift(>=3.0)
+                return uuid.uuidString.hashValue
+            #else
+                return uuid.UUIDString.hashValue
+            #endif
+
         }
     }
 }

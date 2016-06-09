@@ -50,7 +50,7 @@ public struct UDPSendObserver: AsyncUDPSocketObserver {
     
     //MARK: - Observers
 
-    public func sockDidClose(socket: AsyncUDPSocket, error: ErrorType?) {
+    public func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?) {
         //No Op
     }
 
