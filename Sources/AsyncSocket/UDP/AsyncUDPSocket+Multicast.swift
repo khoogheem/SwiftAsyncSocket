@@ -160,8 +160,8 @@ internal extension AsyncUDPSocket {
         var hints = addrinfo(
             ai_flags: AI_NUMERICHOST,   //no name resolution
             ai_family: groupFamily,
-            ai_socktype: SOCK_DGRAM,
-            ai_protocol: IPPROTO_UDP,
+            ai_socktype: ASSocketType.DataGram.value,
+            ai_protocol: ASIPProto.UDP.value,
             ai_addrlen: 0,
             ai_canonname: nil,
             ai_addr: nil,
@@ -263,7 +263,7 @@ internal extension AsyncUDPSocket {
 
             #endif
 
-            status = setsockopt(sockfd, IPPROTO_IP, request, &imReq, UInt32(sizeof(ip_mreq)))
+            status = setsockopt(sockfd, ASIPProto.IPV4.value, request, &imReq, UInt32(sizeof(ip_mreq)))
 
         } else if self.addressFamily == AF_INET6 {
             var imReq: ipv6_mreq = ipv6_mreq()
@@ -282,7 +282,7 @@ internal extension AsyncUDPSocket {
 
             #endif
 
-            status = setsockopt(sockfd, IPPROTO_IPV6, request, &imReq, UInt32(sizeof(ipv6_mreq)))
+            status = setsockopt(sockfd, ASIPProto.IPV6.value, request, &imReq, UInt32(sizeof(ipv6_mreq)))
         }
 
         return status

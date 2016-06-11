@@ -128,8 +128,8 @@ private extension AsyncUDPSocket {
             var hints = addrinfo(
                 ai_flags: AI_NUMERICHOST,   //no name resolution
                 ai_family: family,
-                ai_socktype: SOCK_DGRAM,
-                ai_protocol: IPPROTO_UDP,
+                ai_socktype: ASSocketType.DataGram.value,
+                ai_protocol: ASIPProto.UDP.value,
                 ai_addrlen: 0,
                 ai_canonname: nil,
                 ai_addr: nil,

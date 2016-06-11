@@ -266,7 +266,7 @@ internal extension AsyncUDPSocket {
         }
 
 
-        sockfd = socket(family, SOCK_DGRAM, 0)
+        sockfd = socket(family, ASSocketType.DataGram.value, 0)
 
         if sockfd == SOCKET_NULL {
             throw BindErrors.SocketCreateError(msg: "Error in Socket() create")
