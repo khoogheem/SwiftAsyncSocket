@@ -1,5 +1,9 @@
 # Great Resource -  http://www.gitignore.io
 
+# Swift
+.build
+Packages/
+
 # OS X
 .DS_Store
 .AppleDouble

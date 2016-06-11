@@ -261,7 +261,7 @@ public extension AsyncUDPSocket {
                 try self.preBind()
 
             } catch {
-                NSLog("Error: \(error)")
+                ASLog("Error: \(error)")
                 errorCode = (error as? BindErrors)!
                 return
             }
@@ -275,7 +275,7 @@ public extension AsyncUDPSocket {
 
             if interfaceData == nil {
                 let error = BindErrors.UnknownInterface(msg: "Unknown interface. Specify valid interface by name (e.g. 'anyaddr', 'en0') or IP address.")
-                NSLog("Error: \(error)")
+                ASLog("Error: \(error)")
                 errorCode = error
                 return
             }
@@ -301,7 +301,7 @@ public extension AsyncUDPSocket {
                 #endif
 
             } catch {
-//                NSLog("Error: \(error)")
+//                ASLog("Error: \(error)")
                 errorCode = (error as? BindErrors)!
                 return
             }

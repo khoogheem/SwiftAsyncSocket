@@ -68,7 +68,7 @@ public extension AsyncUDPSocket {
             throw errors
         }
 
-//        NSLog("Joined Multicast Group %@", group)
+//        ASLog("Joined Multicast Group %@", group)
 
     }
 
@@ -108,7 +108,7 @@ public extension AsyncUDPSocket {
             throw errors
         }
 
-//        NSLog("Leaving Multicast Group %@", group)
+//        ASLog("Leaving Multicast Group %@", group)
 
     }
     
@@ -127,7 +127,7 @@ internal extension AsyncUDPSocket {
             try self.preCheck()
 
         } catch {
-            NSLog("Error: \(error)")
+            ASLog("Error: \(error)")
             throw error
         }
 
@@ -309,3 +309,4 @@ private extension AsyncUDPSocket {
     }
 
 }
+

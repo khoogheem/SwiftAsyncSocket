@@ -358,17 +358,17 @@ internal extension AsyncUDPSocket {
 
             if self.currentSend == nil {
 
-                NSLog("Nothing to send")
+                ASLog("Nothing to send")
                 self.suspendSendSource()
 
             } else if self.currentSend?.resolveInProgress == true {
 
-                NSLog("Resolv susspec")
+                ASLog("Resolv susspec")
 
                 self.suspendSendSource()
 
             } else {
-                NSLog("dosSEND")
+                ASLog("dosSEND")
 
                 self.doSend()
             }

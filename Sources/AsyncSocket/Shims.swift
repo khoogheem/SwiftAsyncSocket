@@ -56,21 +56,21 @@ public enum ASIPProto {
         switch self {
         case IPV4:
             #if os(Linux)
-                return Int32(IPPROTO_IP.rawValue)
+                return Int32(IPPROTO_IP)
             #else
                 return IPPROTO_IP
             #endif
 
         case IPV6:
             #if os(Linux)
-                return Int32(IPPROTO_IPV6.rawValue)
+                return Int32(IPPROTO_IPV6)
             #else
                 return IPPROTO_IPV6
             #endif
 
         case UDP:
             #if os(Linux)
-                return Int32(IPPROTO_UDP.rawValue)
+                return Int32(IPPROTO_UDP)
             #else
                 return IPPROTO_UDP
             #endif

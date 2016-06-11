@@ -1,8 +1,8 @@
 //
-//  SwiftAsyncSocket.h
+//  Logger.swift
 //  SwiftAsyncSocket
 //
-//  Created by Kevin Hoogheem on 12/10/15.
+//  Created by Kevin Hoogheem on 12/11/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Foundation
 
-@import Foundation;
-
-//! Project version number for SwiftAsyncSocket.
-FOUNDATION_EXPORT double SwiftAsyncSocketVersionNumber;
-
-//! Project version string for SwiftAsyncSocket.
-FOUNDATION_EXPORT const unsigned char SwiftAsyncSocketVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <SwiftAsyncSocket/PublicHeader.h>
-
+/**
+ Logs Messages to the console in a similar way NSLog works.  
+ 
+ Messages will only be sent while in debug mode.  No logs will be sent in production code
+*/
+public func ASLog(_ message: String, functionName: String = #function, fileNameWithPath: String = #file, lineNumber: Int = #line ) {
+    
+    let formatter: NSDateFormatter = NSDateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+    formatter.timeZone = NSTimeZone.systemTimeZone()
+    
+    let dateString = formatter.stringFromDate(NSDate())
+    
+    let output = "\(dateString) [\(functionName), line \(lineNumber)] - \(message)"
+    debugPrint(output)
+}
 
