@@ -218,7 +218,11 @@ public extension AsyncUDPSocket {
 
         let block: dispatch_block_t = {
 
-            self.flags.insert(.closeAfterSend)
+            #if swift(>=3.0)
+                _ = self.flags.insert(.closeAfterSend)
+            #else
+                self.flags.insert(.closeAfterSend)
+            #endif
 
             if self.currentSend == nil && self.sendQueue.count == 0 {
                 #if swift(>=3.0)

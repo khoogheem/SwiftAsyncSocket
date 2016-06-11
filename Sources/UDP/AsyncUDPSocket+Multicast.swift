@@ -151,7 +151,7 @@ internal extension AsyncUDPSocket {
         #endif
 
         #if swift(>=3.0)
-            var groupAddr: UnsafeMutablePointer<addrinfo>?
+            var groupAddr: UnsafeMutablePointer<addrinfo>? = UnsafeMutablePointer<addrinfo>(allocatingCapacity: 1)
         #else
             var groupAddr: UnsafeMutablePointer<addrinfo> = UnsafeMutablePointer<addrinfo>(nil)
         #endif

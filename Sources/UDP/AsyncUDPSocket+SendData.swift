@@ -112,7 +112,8 @@ private extension AsyncUDPSocket {
 
         dispatch_async(globalConcurrentQ) { () -> Void in
             #if swift(>=3.0)
-                var addrInfo: UnsafeMutablePointer<addrinfo>?
+                var addrInfo: UnsafeMutablePointer<addrinfo>? = UnsafeMutablePointer<addrinfo>(allocatingCapacity: 1)
+
                 let family: Int32 = host.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
                 let hostStr = host.cString(using: NSUTF8StringEncoding)
                 let portStr = String(port).cString(using: NSUTF8StringEncoding)
@@ -402,7 +403,11 @@ internal extension AsyncUDPSocket {
 
             dispatch_suspend(source)
 
-            flags.insert(.sendSourceSuspend)
+            #if swift(>=3.0)
+                _ = flags.insert(.sendSourceSuspend)
+            #else
+                flags.insert(.sendSourceSuspend)
+            #endif
 
         }
     }

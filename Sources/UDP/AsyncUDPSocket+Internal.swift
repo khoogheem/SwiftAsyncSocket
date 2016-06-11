@@ -228,7 +228,12 @@ internal extension AsyncUDPSocket {
             throw BindErrors.UnableToBind(msg: "Error in bind() function")
         }
 
-        flags.insert(.didBind )
+        #if swift(>=3.0)
+            _ = flags.insert(.didBind)
+        #else
+            flags.insert(.didBind)
+        #endif
+
     }
 
 
@@ -316,8 +321,12 @@ internal extension AsyncUDPSocket {
 
         setupSendReceiveSources()
 
-        flags.insert(.didCreateSockets)
-        
+        #if swift(>=3.0)
+            _ = flags.insert(.didCreateSockets)
+        #else
+            flags.insert(.didCreateSockets)
+        #endif
+
     }
 
     private func setupSendReceiveSources() {
@@ -341,7 +350,11 @@ internal extension AsyncUDPSocket {
         //Send Handler
         dispatch_source_set_event_handler(newSendSource) { () -> Void in
 
-            self.flags.insert(.sockCanAccept)
+            #if swift(>=3.0)
+                _ = self.flags.insert(.sockCanAccept)
+            #else
+                self.flags.insert(.sockCanAccept)
+            #endif
 
             if self.currentSend == nil {
 
@@ -397,7 +410,12 @@ internal extension AsyncUDPSocket {
 
         socketBytesAvailable = 0
 
-        flags.insert([.sockCanAccept, .sendSourceSuspend, .recvSourceSuspend])
+        #if swift(>=3.0)
+            _ = flags.insert([.sockCanAccept, .sendSourceSuspend, .recvSourceSuspend])
+        #else
+            flags.insert([.sockCanAccept, .sendSourceSuspend, .recvSourceSuspend])
+        #endif
+
         sendSource = newSendSource
         receiveSource = newReceiveSource
     }

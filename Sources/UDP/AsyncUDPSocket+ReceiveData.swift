@@ -57,7 +57,12 @@ public extension AsyncUDPSocket {
                 }
 
                 self.flags.remove(UdpSocketFlags.receiveContinous)
-                self.flags.insert(UdpSocketFlags.receiveOnce)
+
+                #if swift(>=3.0)
+                    _ = self.flags.insert(UdpSocketFlags.receiveOnce)
+                #else
+                    self.flags.insert(UdpSocketFlags.receiveOnce)
+                #endif
 
                 //Continue to receive
                 dispatch_async(self.socketQueue, { () -> Void in
@@ -94,7 +99,11 @@ public extension AsyncUDPSocket {
                 }
 
                 self.flags.remove(UdpSocketFlags.receiveOnce)
-                self.flags.insert(UdpSocketFlags.receiveContinous)
+                #if swift(>=3.0)
+                    _ = self.flags.insert(UdpSocketFlags.receiveContinous)
+                #else
+                    self.flags.insert(UdpSocketFlags.receiveContinous)
+                #endif
 
                 //Continue to receive
                 dispatch_async(self.socketQueue, { () -> Void in
@@ -155,7 +164,12 @@ internal extension AsyncUDPSocket {
 
                 dispatch_suspend(source)
 
-                flags.insert(.recvSourceSuspend)
+                #if swift(>=3.0)
+                    _ = flags.insert(.recvSourceSuspend)
+                #else
+                    flags.insert(.recvSourceSuspend)
+                #endif
+
             }
         }
     }
