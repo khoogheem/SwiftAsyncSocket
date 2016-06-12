@@ -27,7 +27,7 @@ import Foundation
 //MARK: - Multicast
 public extension AsyncUDPSocket {
 
-    public func joinMulticast(group: String, interface _interface: String = "anyaddr") throws {
+    public func joinMulticast(group: String, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4) throws {
         var errorCode: MulticastErrors?
 
         let block: dispatch_block_t = {
@@ -68,11 +68,11 @@ public extension AsyncUDPSocket {
             throw errors
         }
 
-//        ASLog("Joined Multicast Group %@", group)
+       ASLog("Joined Multicast Group \(group)")
 
     }
 
-    public func leaveMulticast(group: String, interface _interface: String = "anyaddr") throws {
+    public func leaveMulticast(group: String, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4) throws {
         var errorCode: MulticastErrors?
 
         let block: dispatch_block_t = {
@@ -121,7 +121,7 @@ public extension AsyncUDPSocket {
 internal extension AsyncUDPSocket {
 
 
-    internal func performMulticast(request: Int32, forGroup: String, onInterface: String) throws {
+    internal func performMulticast(request: Int32, forGroup: String, onInterface: InterfaceType) throws {
 
         do {
             try self.preCheck()
@@ -180,11 +180,11 @@ internal extension AsyncUDPSocket {
         #endif
 
 
-        #if swift(>=3.0)
-            print("--group: \(groupAddr?.pointee)")
-        #else
-            print("--group: \(groupAddr.memory)")
-        #endif
+//        #if swift(>=3.0)
+//            print("--group: \(groupAddr?.pointee)")
+//        #else
+//            print("--group: \(groupAddr.memory)")
+//        #endif
 
 
         //Perform Request

@@ -104,15 +104,15 @@ public class AsyncUDPSocket {
     internal let dispatchQueueKey = "UDPSocketQueue"
 
     #if swift(>=3.0)
-    static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, to: UnsafePointer<Void>.self)     // some unique pointer
-    private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
-        unsafeBitCast(self, to: UnsafeMutablePointer<Void>.self)   // pointer to self
+        static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, to: UnsafePointer<Void>.self)     // some unique pointer
+        private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
+            unsafeBitCast(self, to: UnsafeMutablePointer<Void>.self)   // pointer to self
         }()
     #else
-    static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, UnsafePointer<Void>.self)     // some unique pointer
-    private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
-        unsafeBitCast(self, UnsafeMutablePointer<Void>.self)   // pointer to self
-    }()
+        static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, UnsafePointer<Void>.self)     // some unique pointer
+        private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
+            unsafeBitCast(self, UnsafeMutablePointer<Void>.self)   // pointer to self
+        }()
     #endif
     
     public init() {
@@ -237,6 +237,7 @@ public extension AsyncUDPSocket {
         dispatch_sync(socketQueue, block)
     }
 
+
     /**
      Binds to a Interface and Port
      
@@ -246,15 +247,16 @@ public extension AsyncUDPSocket {
         - localhost or loopback - Binds to localhost only
         - IP Address - A specific IP Address
     */
-    public func bindTo(port: UInt16, interface _interface: String = "anyaddr", option: BindOptions = [.reusePort]) throws {
+    public func bindTo(port: UInt16, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4, option: BindOptions = [.reusePort]) throws {
+//    public func bindTo(port: UInt16, interface _interface: String = "anyaddr", option: BindOptions = [.reusePort]) throws {
 
         var errorCode: BindErrors?
 
         let block: dispatch_block_t = {
             #if swift(>=3.0)
-                self.addressFamily = _interface.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
+                self.addressFamily = self.determineAFType(interface: _interface)
             #else
-                self.addressFamily = _interface.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+                self.addressFamily = self.determineAFType(_interface)
             #endif
 
             do {
@@ -319,4 +321,28 @@ public extension AsyncUDPSocket {
         }
 
     }
+}
+
+private extension AsyncUDPSocket {
+
+    /**
+     Gets the Correct Family Type for the Interface passed in.
+     
+     - returns: Int32 Value for Family type
+    */
+    private func determineAFType(interface: InterfaceType) -> Int32 {
+        switch interface {
+        case .ipAddress(let address):
+            return address.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+        case .anyAddrIPV4:
+            return AF_INET
+        case .anyAddrIPV6:
+            return AF_INET6
+        case .loopbackIPV4:
+            return AF_INET
+        case .loopbackIPV6:
+            return AF_INET6
+        }
+    }
+
 }

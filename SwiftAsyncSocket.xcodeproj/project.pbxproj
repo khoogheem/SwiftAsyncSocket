@@ -34,6 +34,9 @@
 		046A00161D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
 		046A00171D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
 		046A00181D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
+		046A001A1D0DA4A90089D41B /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00191D0DA4A90089D41B /* Interface.swift */; };
+		046A001B1D0DA4A90089D41B /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00191D0DA4A90089D41B /* Interface.swift */; };
+		046A001C1D0DA4A90089D41B /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00191D0DA4A90089D41B /* Interface.swift */; };
 		046AFFFD1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
 		046AFFFE1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
 		046AFFFF1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
@@ -90,6 +93,7 @@
 		046458E51CFCD61A005B0CDE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		046458E61CFCD61A005B0CDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		046A00151D0DA23B0089D41B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		046A00191D0DA4A90089D41B /* Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interface.swift; sourceTree = "<group>"; };
 		046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Internal.swift"; sourceTree = "<group>"; };
 		046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Multicast.swift"; sourceTree = "<group>"; };
 		046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+ReceiveData.swift"; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */,
 				046261A91D09DD8600CBFF0F /* Shims.swift */,
 				046A00151D0DA23B0089D41B /* Logger.swift */,
+				046A00191D0DA4A90089D41B /* Interface.swift */,
 				046AFFF41D0DA1E70089D41B /* UDP */,
 			);
 			path = Sources;
@@ -466,6 +471,7 @@
 				046A00161D0DA23B0089D41B /* Logger.swift in Sources */,
 				046A00061D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
 				046A00031D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A001A1D0DA4A90089D41B /* Interface.swift in Sources */,
 				046261AA1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				046A000F1D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);
@@ -491,6 +497,7 @@
 				046A00171D0DA23B0089D41B /* Logger.swift in Sources */,
 				046A00071D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
 				046A00041D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A001B1D0DA4A90089D41B /* Interface.swift in Sources */,
 				046261AB1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				046A00101D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);
@@ -516,6 +523,7 @@
 				046A00181D0DA23B0089D41B /* Logger.swift in Sources */,
 				046A00081D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
 				046A00051D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A001C1D0DA4A90089D41B /* Interface.swift in Sources */,
 				046261AC1D09DD8600CBFF0F /* Shims.swift in Sources */,
 				046A00111D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);

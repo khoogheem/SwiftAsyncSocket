@@ -43,9 +43,9 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         do {
             #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: "0.0.0.0")
+                try UDP.bindTo(port: 54022)
             #else
-                try UDP.bindTo(54022, interface: "0.0.0.0")
+                try UDP.bindTo(54022)
             #endif
 
         } catch {
@@ -61,9 +61,9 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         do {
             #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: "0.0.0.0")
+                try UDP.bindTo(port: 54022, interface: InterfaceType.anyAddrIPV4)
             #else
-                try UDP.bindTo(54022, interface: "0.0.0.0")
+                try UDP.bindTo(54022, interface: InterfaceType.anyAddrIPV4)
             #endif
 
         } catch {
@@ -91,9 +91,9 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         do {
             #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: "2002:3289:d71c::1610:9fff:fed6:475d")
+                try UDP.bindTo(54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
             #else
-                try UDP.bindTo(54022, interface: "2002:3289:d71c::1610:9fff:fed6:475d")
+                try UDP.bindTo(54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
             #endif
 
         } catch {
@@ -164,9 +164,9 @@ class SwiftAsyncSocketTests: XCTestCase {
         do {
 
             #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: "0.0.0.0")
+                try UDP.bindTo(port: 54022)
             #else
-                try UDP.bindTo(54022, interface: "0.0.0.0")
+                try UDP.bindTo(54022)
             #endif
 
         } catch {
@@ -177,7 +177,7 @@ class SwiftAsyncSocketTests: XCTestCase {
             #if swift(>=3.0)
                 try UDP.joinMulticast(group: "239.78.80.110")
             #else
-                try UDP.joinMulticast("239.78.80.110")
+                try UDP.joinMulticast("239.78.80.101")
             #endif
 
         } catch {
