@@ -25,18 +25,26 @@
 import Foundation
 
 /**
- Logs Messages to the console in a similar way NSLog works.  
- 
+ Logs Messages to the console in a similar way NSLog works.
+
  Messages will only be sent while in debug mode.  No logs will be sent in production code
-*/
+ */
 public func ASLog(_ message: String, functionName: String = #function, fileNameWithPath: String = #file, lineNumber: Int = #line ) {
-    
+
     let formatter: NSDateFormatter = NSDateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-    formatter.timeZone = NSTimeZone.systemTimeZone()
-    
-    let dateString = formatter.stringFromDate(NSDate())
-    
+
+    #if swift(>=3.0)
+        formatter.timeZone = NSTimeZone.system()
+
+        let dateString = formatter.string(from: NSDate())
+    #else
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+
+        let dateString = formatter.stringFromDate(NSDate())
+    #endif
+
+
     let output = "\(dateString) [\(functionName), line \(lineNumber)] - \(message)"
     debugPrint(output)
 }

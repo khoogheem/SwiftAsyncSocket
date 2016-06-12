@@ -160,7 +160,6 @@ internal extension AsyncUDPSocket {
         if flags.contains(.recvSourceSuspend).boolValue == false {
 
             if let source = receiveSource {
-                ASLog("dispatch_suspend(receiveSource)")
 
                 dispatch_suspend(source)
 
@@ -190,7 +189,6 @@ internal extension AsyncUDPSocket {
     internal func doReceive() {
 
         if (flags.contains(UdpSocketFlags.receiveContinous) || flags.contains(UdpSocketFlags.receiveOnce)) == false {
-            ASLog("Receiving is paused")
 
             if socketBytesAvailable > 0 {
                 suspendReceive()
@@ -241,15 +239,15 @@ internal extension AsyncUDPSocket {
         } else {
             #if swift(>=3.0)
                 guard let endpoint = withUnsafePointer(&socketAddress, { self.getEndpointFromSocketAddress(socketAddressPointer: UnsafePointer($0)) }) else {
-                    ASLog("Failed to get the address and port from the socket address received from recvfrom")
-                    //            closeSocketFinal()
-                    return
+                        ASLog("Failed to get the address and port from the socket address received from recvfrom")
+                        //            closeSocketFinal()
+                        return
                 }
             #else
                 guard let endpoint = withUnsafePointer(&socketAddress, { self.getEndpointFromSocketAddress(UnsafePointer($0)) }) else {
-                ASLog("Failed to get the address and port from the socket address received from recvfrom")
-                //            closeSocketFinal()
-                return
+                    ASLog("Failed to get the address and port from the socket address received from recvfrom")
+                    //            closeSocketFinal()
+                    return
                 }
             #endif
 
@@ -396,7 +394,7 @@ private extension AsyncUDPSocket {
                     return nil
                 }
             #else
-                if let host = String.fromCString(newHost) {
+                if let host = String.fromCString(hostCString) {
                     return (host, port)
                 } else {
                     return nil

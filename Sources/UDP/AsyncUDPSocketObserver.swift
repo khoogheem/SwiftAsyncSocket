@@ -45,13 +45,12 @@ public protocol AsyncUDPSocketObserver {
 }
 
 public func ==(lhs: AsyncUDPSocketObserver, rhs: AsyncUDPSocketObserver) -> Bool {
-//KAH - Fix this later
     #if swift(>=3.0)
-            #if os(Linux)
-		return lhs.uuid.UUIDString == rhs.uuid.UUIDString
-            #else
-		return lhs.uuid.uuidString == rhs.uuid.uuidString
-            #endif
+        #if os(Linux)
+            return lhs.uuid.UUIDString == rhs.uuid.UUIDString
+        #else
+            return lhs.uuid.uuidString == rhs.uuid.uuidString
+        #endif
     #else
         return lhs.uuid.UUIDString == rhs.uuid.UUIDString
     #endif
@@ -63,16 +62,15 @@ public func ==(lhs: AsyncUDPSocketObserver, rhs: AsyncUDPSocketObserver) -> Bool
 //}
 
 extension AsyncUDPSocketObserver {
-//KAH - fix later
 
     public var hashValue: Int {
         get {
             #if swift(>=3.0)
-		#if os(Linux)
+                #if os(Linux)
                     return uuid.UUIDString.hashValue
-		#else
+                #else
                     return uuid.uuidString.hashValue
-		#endif
+                #endif
             #else
                 return uuid.UUIDString.hashValue
             #endif
@@ -80,4 +78,3 @@ extension AsyncUDPSocketObserver {
         }
     }
 }
-

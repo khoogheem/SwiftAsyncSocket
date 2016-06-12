@@ -10,30 +10,33 @@
 		046261AA1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
 		046261AB1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
 		046261AC1D09DD8600CBFF0F /* Shims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046261A91D09DD8600CBFF0F /* Shims.swift */; };
-		0462F96B1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9631D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift */; };
-		0462F96C1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9631D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift */; };
-		0462F96D1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9631D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift */; };
-		0462F96E1D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9641D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift */; };
-		0462F96F1D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9641D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift */; };
-		0462F9701D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9641D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift */; };
-		0462F9711D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9651D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift */; };
-		0462F9721D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9651D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift */; };
-		0462F9731D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9651D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift */; };
-		0462F9741D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9661D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift */; };
-		0462F9751D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9661D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift */; };
-		0462F9761D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9661D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift */; };
-		0462F9771D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9671D0C6EE800EBBCED /* AsyncUDPSocket.swift */; };
-		0462F9781D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9671D0C6EE800EBBCED /* AsyncUDPSocket.swift */; };
-		0462F9791D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9671D0C6EE800EBBCED /* AsyncUDPSocket.swift */; };
-		0462F97A1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9681D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift */; };
-		0462F97B1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9681D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift */; };
-		0462F97C1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9681D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift */; };
-		0462F97D1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9691D0C6EE800EBBCED /* UDPReceiveObserver.swift */; };
-		0462F97E1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9691D0C6EE800EBBCED /* UDPReceiveObserver.swift */; };
-		0462F97F1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F9691D0C6EE800EBBCED /* UDPReceiveObserver.swift */; };
-		0462F9801D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F96A1D0C6EE800EBBCED /* UDPSendObserver.swift */; };
-		0462F9811D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F96A1D0C6EE800EBBCED /* UDPSendObserver.swift */; };
-		0462F9821D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462F96A1D0C6EE800EBBCED /* UDPSendObserver.swift */; };
+		046A00001D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */; };
+		046A00011D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */; };
+		046A00021D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */; };
+		046A00031D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */; };
+		046A00041D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */; };
+		046A00051D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */; };
+		046A00061D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF81D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift */; };
+		046A00071D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF81D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift */; };
+		046A00081D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF81D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift */; };
+		046A00091D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF91D0DA1E70089D41B /* AsyncUDPSocket.swift */; };
+		046A000A1D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF91D0DA1E70089D41B /* AsyncUDPSocket.swift */; };
+		046A000B1D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF91D0DA1E70089D41B /* AsyncUDPSocket.swift */; };
+		046A000C1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */; };
+		046A000D1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */; };
+		046A000E1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */; };
+		046A000F1D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */; };
+		046A00101D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */; };
+		046A00111D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */; };
+		046A00121D0DA1E70089D41B /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */; };
+		046A00131D0DA1E70089D41B /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */; };
+		046A00141D0DA1E70089D41B /* UDPSendObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */; };
+		046A00161D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
+		046A00171D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
+		046A00181D0DA23B0089D41B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046A00151D0DA23B0089D41B /* Logger.swift */; };
+		046AFFFD1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
+		046AFFFE1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
+		046AFFFF1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
 		04A970C21C1E31B3006ACBC7 /* SwiftAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04A970CF1C1E76D7006ACBC7 /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */; };
 		04F04A5B1C1A519900B94EFD /* SwiftAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -84,16 +87,17 @@
 
 /* Begin PBXFileReference section */
 		046261A91D09DD8600CBFF0F /* Shims.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shims.swift; sourceTree = "<group>"; };
-		0462F9631D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Internal.swift"; sourceTree = "<group>"; };
-		0462F9641D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Multicast.swift"; sourceTree = "<group>"; };
-		0462F9651D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+ReceiveData.swift"; sourceTree = "<group>"; };
-		0462F9661D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+SendData.swift"; sourceTree = "<group>"; };
-		0462F9671D0C6EE800EBBCED /* AsyncUDPSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUDPSocket.swift; sourceTree = "<group>"; };
-		0462F9681D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUDPSocketObserver.swift; sourceTree = "<group>"; };
-		0462F9691D0C6EE800EBBCED /* UDPReceiveObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPReceiveObserver.swift; sourceTree = "<group>"; };
-		0462F96A1D0C6EE800EBBCED /* UDPSendObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPSendObserver.swift; sourceTree = "<group>"; };
 		046458E51CFCD61A005B0CDE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		046458E61CFCD61A005B0CDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		046A00151D0DA23B0089D41B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Internal.swift"; sourceTree = "<group>"; };
+		046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+Multicast.swift"; sourceTree = "<group>"; };
+		046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+ReceiveData.swift"; sourceTree = "<group>"; };
+		046AFFF81D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AsyncUDPSocket+SendData.swift"; sourceTree = "<group>"; };
+		046AFFF91D0DA1E70089D41B /* AsyncUDPSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUDPSocket.swift; sourceTree = "<group>"; };
+		046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUDPSocketObserver.swift; sourceTree = "<group>"; };
+		046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPReceiveObserver.swift; sourceTree = "<group>"; };
+		046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPSendObserver.swift; sourceTree = "<group>"; };
 		04F04A571C1A519900B94EFD /* SwiftAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftAsyncSocket.h; sourceTree = "<group>"; };
 		04F04A611C1A519A00B94EFD /* SwiftAsyncSocketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAsyncSocketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,25 +158,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0462F9611D0C6EE800EBBCED /* AsyncSocket */ = {
+		046AFFF41D0DA1E70089D41B /* UDP */ = {
 			isa = PBXGroup;
 			children = (
-				0462F9621D0C6EE800EBBCED /* UDP */,
-			);
-			path = AsyncSocket;
-			sourceTree = "<group>";
-		};
-		0462F9621D0C6EE800EBBCED /* UDP */ = {
-			isa = PBXGroup;
-			children = (
-				0462F9631D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift */,
-				0462F9641D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift */,
-				0462F9651D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift */,
-				0462F9661D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift */,
-				0462F9671D0C6EE800EBBCED /* AsyncUDPSocket.swift */,
-				0462F9681D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift */,
-				0462F9691D0C6EE800EBBCED /* UDPReceiveObserver.swift */,
-				0462F96A1D0C6EE800EBBCED /* UDPSendObserver.swift */,
+				046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */,
+				046AFFF61D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift */,
+				046AFFF71D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift */,
+				046AFFF81D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift */,
+				046AFFF91D0DA1E70089D41B /* AsyncUDPSocket.swift */,
+				046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */,
+				046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */,
+				046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */,
 			);
 			path = UDP;
 			sourceTree = "<group>";
@@ -206,7 +202,8 @@
 			children = (
 				04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */,
 				046261A91D09DD8600CBFF0F /* Shims.swift */,
-				0462F9611D0C6EE800EBBCED /* AsyncSocket */,
+				046A00151D0DA23B0089D41B /* Logger.swift */,
+				046AFFF41D0DA1E70089D41B /* UDP */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -461,15 +458,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0462F97A1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */,
-				0462F96B1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */,
-				0462F9771D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */,
-				0462F96E1D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */,
-				0462F9801D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */,
-				0462F9741D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */,
-				0462F9711D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A000C1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */,
+				046AFFFD1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */,
+				046A00091D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */,
+				046A00001D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */,
+				046A00121D0DA1E70089D41B /* UDPSendObserver.swift in Sources */,
+				046A00161D0DA23B0089D41B /* Logger.swift in Sources */,
+				046A00061D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
+				046A00031D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				046261AA1D09DD8600CBFF0F /* Shims.swift in Sources */,
-				0462F97D1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */,
+				046A000F1D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,15 +483,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0462F97B1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */,
-				0462F96C1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */,
-				0462F9781D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */,
-				0462F96F1D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */,
-				0462F9811D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */,
-				0462F9751D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */,
-				0462F9721D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A000D1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */,
+				046AFFFE1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */,
+				046A000A1D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */,
+				046A00011D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */,
+				046A00131D0DA1E70089D41B /* UDPSendObserver.swift in Sources */,
+				046A00171D0DA23B0089D41B /* Logger.swift in Sources */,
+				046A00071D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
+				046A00041D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				046261AB1D09DD8600CBFF0F /* Shims.swift in Sources */,
-				0462F97E1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */,
+				046A00101D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,15 +508,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0462F97C1D0C6EE800EBBCED /* AsyncUDPSocketObserver.swift in Sources */,
-				0462F96D1D0C6EE800EBBCED /* AsyncUDPSocket+Internal.swift in Sources */,
-				0462F9791D0C6EE800EBBCED /* AsyncUDPSocket.swift in Sources */,
-				0462F9701D0C6EE800EBBCED /* AsyncUDPSocket+Multicast.swift in Sources */,
-				0462F9821D0C6EE800EBBCED /* UDPSendObserver.swift in Sources */,
-				0462F9761D0C6EE800EBBCED /* AsyncUDPSocket+SendData.swift in Sources */,
-				0462F9731D0C6EE800EBBCED /* AsyncUDPSocket+ReceiveData.swift in Sources */,
+				046A000E1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift in Sources */,
+				046AFFFF1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */,
+				046A000B1D0DA1E70089D41B /* AsyncUDPSocket.swift in Sources */,
+				046A00021D0DA1E70089D41B /* AsyncUDPSocket+Multicast.swift in Sources */,
+				046A00141D0DA1E70089D41B /* UDPSendObserver.swift in Sources */,
+				046A00181D0DA23B0089D41B /* Logger.swift in Sources */,
+				046A00081D0DA1E70089D41B /* AsyncUDPSocket+SendData.swift in Sources */,
+				046A00051D0DA1E70089D41B /* AsyncUDPSocket+ReceiveData.swift in Sources */,
 				046261AC1D09DD8600CBFF0F /* Shims.swift in Sources */,
-				0462F97F1D0C6EE800EBBCED /* UDPReceiveObserver.swift in Sources */,
+				046A00111D0DA1E70089D41B /* UDPReceiveObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

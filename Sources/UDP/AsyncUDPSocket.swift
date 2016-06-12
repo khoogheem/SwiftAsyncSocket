@@ -288,7 +288,7 @@ public extension AsyncUDPSocket {
                 #endif
 
             } catch{
-                print(error)
+                ASLog("Error: \(error)")
                 errorCode = (error as? BindErrors)!
                 return
             }
@@ -301,7 +301,7 @@ public extension AsyncUDPSocket {
                 #endif
 
             } catch {
-//                ASLog("Error: \(error)")
+                ASLog("Error: \(error)")
                 errorCode = (error as? BindErrors)!
                 return
             }

@@ -309,4 +309,3 @@ private extension AsyncUDPSocket {
     }
 
 }
-

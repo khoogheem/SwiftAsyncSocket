@@ -130,7 +130,7 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         let observ = UDPReceiveObserver(closeHandler: { thesock, error -> Void in
 
-            NSLog("Socket did Close: \(error)")
+            print("Socket did Close: \(error)")
 
             }, receiveHandler: { (theSocket, data, host, port) -> Void in
 
@@ -146,11 +146,11 @@ class SwiftAsyncSocketTests: XCTestCase {
 
 
         let sendOb = UDPSendObserver(didSend: { (socket, tag) -> Void in
-            NSLog("SEND: \(socket) TAG: \(tag)")
+            print("SEND: \(socket) TAG: \(tag)")
 
             }, didNotSend: { (socket, tag, error) -> Void in
 
-                NSLog("didNotSend: \(socket) TAG: \(tag) Error: \(error)")
+                print("didNotSend: \(socket) TAG: \(tag) Error: \(error)")
 
         })
 
