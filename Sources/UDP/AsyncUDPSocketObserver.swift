@@ -30,17 +30,17 @@ import Foundation
 */
 public protocol AsyncUDPSocketObserver {
 
-    var uuid: NSUUID { get }
+    var uuid: UUID { get }
 
-    func socketDidReceive(socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16)
+    func socketDidReceive(_ socket: AsyncUDPSocket, data: Data, fromHost: String, onPort: UInt16)
 
-    func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?)
+    func sockDidClose(_ socket: AsyncUDPSocket, error: ASErrorType?)
 
 
     //Send Errors
-    func socketDidNotSend(socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors)
+    func socketDidNotSend(_ socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors)
 
-    func socketDidSend(socket: AsyncUDPSocket, tag: Int)
+    func socketDidSend(_ socket: AsyncUDPSocket, tag: Int)
 
 }
 
@@ -52,7 +52,7 @@ public func ==(lhs: AsyncUDPSocketObserver, rhs: AsyncUDPSocketObserver) -> Bool
             return lhs.uuid.uuidString == rhs.uuid.uuidString
         #endif
     #else
-        return lhs.uuid.UUIDString == rhs.uuid.UUIDString
+        return lhs.uuid.uuidString == rhs.uuid.uuidString
     #endif
 }
 
@@ -72,7 +72,7 @@ extension AsyncUDPSocketObserver {
                     return uuid.uuidString.hashValue
                 #endif
             #else
-                return uuid.UUIDString.hashValue
+                return uuid.uuidString.hashValue
             #endif
 
         }

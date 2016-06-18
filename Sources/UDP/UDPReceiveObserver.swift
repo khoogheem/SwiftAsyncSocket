@@ -30,43 +30,43 @@ import Foundation
 */
 public struct UDPReceiveObserver: AsyncUDPSocketObserver {
 
-    private let receiveHandler: ((AsyncUDPSocket, NSData, String, UInt16) -> Void)?
+    private let receiveHandler: ((AsyncUDPSocket, Data, String, UInt16) -> Void)?
     private let closeHandler: ((socket: AsyncUDPSocket, error: ASErrorType?) -> Void)?
-    private let dispatchQueue: dispatch_queue_t
+    private let dispatchQueue: DispatchQueue
 
-    private(set) public var uuid: NSUUID
+    private(set) public var uuid: UUID
 
     public init(
         closeHandler: ((socket: AsyncUDPSocket, error: ASErrorType?) -> Void)? = nil,
-        receiveHandler: ((socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16) -> Void)? = nil,
-        onQueue: dispatch_queue_t = dispatch_get_main_queue()
+        receiveHandler: ((socket: AsyncUDPSocket, data: Data, fromHost: String, onPort: UInt16) -> Void)? = nil,
+        onQueue: DispatchQueue = DispatchQueue.main
         ){
             self.closeHandler = closeHandler
             self.receiveHandler = receiveHandler
             self.dispatchQueue = onQueue
-            self.uuid = NSUUID()
+            self.uuid = UUID()
     }
 
     //MARK: - Observers
 
-    public func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?) {
-        dispatch_async(dispatchQueue) { () -> Void in
+    public func sockDidClose(_ socket: AsyncUDPSocket, error: ASErrorType?) {
+        dispatchQueue.async { () -> Void in
             self.closeHandler?(socket: socket, error: error)
         }
     }
 
-    public func socketDidReceive(socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16) {
+    public func socketDidReceive(_ socket: AsyncUDPSocket, data: Data, fromHost: String, onPort: UInt16) {
 
-        dispatch_async(dispatchQueue) { () -> Void in
+        dispatchQueue.async { () -> Void in
             self.receiveHandler?(socket, data, fromHost, onPort)
         }
     }
 
-    public func socketDidNotSend(socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) {
+    public func socketDidNotSend(_ socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) {
         //No Op
     }
 
-    public func socketDidSend(socket: AsyncUDPSocket, tag: Int) {
+    public func socketDidSend(_ socket: AsyncUDPSocket, tag: Int) {
         //no Op
     }
 }

@@ -42,16 +42,31 @@ class SwiftAsyncSocketTests: XCTestCase {
         let UDP: AsyncUDPSocket = AsyncUDPSocket()
 
         do {
-            #if swift(>=3.0)
-                try UDP.bindTo(port: 54022)
-            #else
-                try UDP.bindTo(54022)
-            #endif
+            try UDP.bindTo(port: 54022)
 
         } catch {
             print("Errorrrror: \(error)")
             XCTFail()
+        }
+        UDP.closeSocket()
 
+        do {
+            try UDP.bindTo(port: 54022, interface: InterfaceType.ipAddress(address: "127.0.0.1"))
+
+        } catch {
+            print("Error in Binding With Address: \(error)")
+            XCTFail()
+        }
+        UDP.closeSocket()
+
+
+        do {
+            try UDP.bindTo(port: 54022, interface: InterfaceType.ipAddress(address: "0.0.0.0.0.0"))
+
+        } catch {
+            print("Error in Binding With Address: \(error)")
+            XCTAssertTrue(1 == 1, "This Should Fail")
+            UDP.closeSocket()
         }
 
     }
@@ -60,11 +75,7 @@ class SwiftAsyncSocketTests: XCTestCase {
         let UDP: AsyncUDPSocket = AsyncUDPSocket()
 
         do {
-            #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: InterfaceType.anyAddrIPV4)
-            #else
-                try UDP.bindTo(54022, interface: InterfaceType.anyAddrIPV4)
-            #endif
+            try UDP.bindTo(port: 54022, interface: InterfaceType.anyAddrIPV4)
 
         } catch {
             print("Errorrrror: \(error)")
@@ -73,11 +84,7 @@ class SwiftAsyncSocketTests: XCTestCase {
         }
 
         do {
-            #if swift(>=3.0)
-                try UDP.joinMulticast(group: "239.78.80.110")
-            #else
-                try UDP.joinMulticast("239.78.80.110")
-            #endif
+            try UDP.joinMulticast( group: "239.78.80.110")
 
         } catch {
             print("Errorrrror: \(error)")
@@ -90,11 +97,7 @@ class SwiftAsyncSocketTests: XCTestCase {
         let UDP: AsyncUDPSocket = AsyncUDPSocket()
 
         do {
-            #if swift(>=3.0)
-                try UDP.bindTo(port: 54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
-            #else
-                try UDP.bindTo(54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
-            #endif
+            try UDP.bindTo(port: 54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
 
         } catch {
             print("Errorrrror: \(error)")
@@ -103,11 +106,7 @@ class SwiftAsyncSocketTests: XCTestCase {
         }
 
         do {
-            #if swift(>=3.0)
-                try UDP.joinMulticast(group: "FF01:0:0:0:0:0:0:201")
-            #else
-                try UDP.joinMulticast("FF01:0:0:0:0:0:0:201")
-            #endif
+            try UDP.joinMulticast(group: "FF01:0:0:0:0:0:0:201")
 
         } catch {
             print("Errorrrror: \(error)")
@@ -118,13 +117,7 @@ class SwiftAsyncSocketTests: XCTestCase {
 
     
     func testExample() {
-        #if swift(>=3.0)
-            let expect: XCTestExpectation = expectation(withDescription: "test")
-        #else
-            let expect: XCTestExpectation = expectationWithDescription("test")
-        #endif
-
-
+        let expect: XCTestExpectation = expectation(withDescription: "test")
 
         let UDP: AsyncUDPSocket = AsyncUDPSocket()
 
@@ -138,12 +131,7 @@ class SwiftAsyncSocketTests: XCTestCase {
 
             })
 
-        #if swift(>=3.0)
-            UDP.addObserver(observer: observ)
-        #else
-            UDP.addObserver(observ)
-        #endif
-
+        UDP.addObserver(observ)
 
         let sendOb = UDPSendObserver(didSend: { (socket, tag) -> Void in
             print("SEND: \(socket) TAG: \(tag)")
@@ -154,31 +142,18 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         })
 
-        #if swift(>=3.0)
-            UDP.addObserver(observer: sendOb)
-        #else
-            UDP.addObserver(sendOb)
-        #endif
-
+        UDP.addObserver(sendOb)
 
         do {
 
-            #if swift(>=3.0)
-                try UDP.bindTo(port: 54022)
-            #else
-                try UDP.bindTo(54022)
-            #endif
+            try UDP.bindTo(port: 54022)
 
         } catch {
             print("Errorrrror: \(error)")
         }
 
         do {
-            #if swift(>=3.0)
-                try UDP.joinMulticast(group: "239.78.80.110")
-            #else
-                try UDP.joinMulticast("239.78.80.101")
-            #endif
+            try UDP.joinMulticast(group: "239.78.80.110")
 
         } catch {
             print("Errorrrror: \(error)")
@@ -196,41 +171,24 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         
 
-        #if swift(>=3.0)
-            waitForExpectations(withTimeout: 3234234236) { (error) -> Void in
+        waitForExpectations(withTimeout: 3234234236) { (error) -> Void in
 
-                if (error != nil) {
-                    XCTFail("Expectation Failed with error: \(error)");
-                }
-                
-            }
-        #else
-            waitForExpectationsWithTimeout(3234234236) { (error) -> Void in
-
-                if (error != nil) {
+            if (error != nil) {
                 XCTFail("Expectation Failed with error: \(error)");
-                }
-            
             }
-        #endif
-        
+
+        }
 
 
     }
-    
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
 
-        #if swift(>=3.0)
-            self.measure {
-                // Put the code you want to measure the time of here.
-            }
-        #else
-            self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
-            }
-        #endif
+        }
 
     }
-    
+
 }

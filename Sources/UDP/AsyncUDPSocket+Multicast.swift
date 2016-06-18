@@ -30,24 +30,14 @@ public extension AsyncUDPSocket {
     public func joinMulticast(group: String, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4) throws {
         var errorCode: MulticastErrors?
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             do {
 
                 if self.addressFamily == AF_INET {
-                    #if swift(>=3.0)
-                        try self.performMulticast(request: IP_ADD_MEMBERSHIP, forGroup: group, onInterface: _interface)
-                    #else
-                        try self.performMulticast(IP_ADD_MEMBERSHIP, forGroup: group, onInterface: _interface)
-                    #endif
-
+                    try self.performMulticast(request: IP_ADD_MEMBERSHIP, forGroup: group, onInterface: _interface)
                 } else {
-                    #if swift(>=3.0)
-                        try self.performMulticast(request: IPV6_JOIN_GROUP, forGroup: group, onInterface: _interface)
-                    #else
-                        try self.performMulticast(IPV6_JOIN_GROUP, forGroup: group, onInterface: _interface)
-                    #endif
-
+                    try self.performMulticast(request: IPV6_JOIN_GROUP, forGroup: group, onInterface: _interface)
                 }
 
             } catch{
@@ -61,7 +51,7 @@ public extension AsyncUDPSocket {
         if isCurrentQueue == true {
             block()
         } else {
-            dispatch_sync(socketQueue, block)
+            socketQueue.sync(execute: block)
         }
 
         if let errors = errorCode {
@@ -72,10 +62,10 @@ public extension AsyncUDPSocket {
 
     }
 
-    public func leaveMulticast(group: String, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4) throws {
+    public func leaveMulticast(_ group: String, interface _interface: InterfaceType = InterfaceType.anyAddrIPV4) throws {
         var errorCode: MulticastErrors?
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             do {
                 if self.addressFamily == AF_INET {
@@ -102,7 +92,7 @@ public extension AsyncUDPSocket {
 
         }
 
-        dispatch_sync(socketQueue, block)
+        socketQueue.sync(execute: block)
 
         if let errors = errorCode {
             throw errors
@@ -134,34 +124,20 @@ internal extension AsyncUDPSocket {
         #if swift(>=3.0)
             let group = (forGroup as NSString).utf8String
         #else
-            let group = (forGroup as NSString).UTF8String
+            let group = (forGroup as NSString).utf8String
         #endif
 
-        #if swift(>=3.0)
-            let groupFamily: Int32 = forGroup.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
-        #else
-            let groupFamily: Int32 = forGroup.characters.split(":").count > 1 ? AF_INET6 : AF_INET
-        #endif
+        let groupFamily: Int32 = forGroup.components(separatedBy: ":").count > 1 ? AF_INET6 : AF_INET
 
+        let groupPtr = unsafeBitCast(group, to: UnsafePointer<Int8>.self)
 
-        #if swift(>=3.0)
-            let groupPtr = unsafeBitCast(group, to: UnsafePointer<Int8>.self)
-        #else
-            let groupPtr = unsafeBitCast(group, UnsafePointer<Int8>.self)
-        #endif
-
-        #if swift(>=3.0)
-            var groupAddr: UnsafeMutablePointer<addrinfo>? = UnsafeMutablePointer<addrinfo>(allocatingCapacity: 1)
-        #else
-            var groupAddr: UnsafeMutablePointer<addrinfo> = UnsafeMutablePointer<addrinfo>(nil)
-        #endif
-
+        var groupAddr: UnsafeMutablePointer<addrinfo>? = UnsafeMutablePointer<addrinfo>(allocatingCapacity: 1)
 
         var hints = addrinfo(
             ai_flags: AI_NUMERICHOST,   //no name resolution
             ai_family: groupFamily,
-            ai_socktype: ASSocketType.DataGram.value,
-            ai_protocol: ASIPProto.UDP.value,
+            ai_socktype: ASSocketType.dataGram.value,
+            ai_protocol: ASIPProto.udp.value,
             ai_addrlen: 0,
             ai_canonname: nil,
             ai_addr: nil,
@@ -171,11 +147,11 @@ internal extension AsyncUDPSocket {
         #if swift(>=3.0)
 
             if getaddrinfo(UnsafePointer<Int8>(groupPtr), UnsafePointer<Int8>(bitPattern: 0), &hints, &groupAddr) != 0 {
-                throw MulticastErrors.JoinError(msg: "Unknown group. Specify valid group IP address")
+                throw MulticastErrors.joinError(msg: "Unknown group. Specify valid group IP address")
             }
         #else
             if getaddrinfo(UnsafePointer<Int8>(groupPtr), UnsafePointer<Int8>(bitPattern: 0), &hints, &groupAddr) != 0 {
-            throw MulticastErrors.JoinError(msg: "Unknown group. Specify valid group IP address")
+            throw MulticastErrors.joinError(msg: "Unknown group. Specify valid group IP address")
             }
         #endif
 
@@ -189,51 +165,32 @@ internal extension AsyncUDPSocket {
 
         //Perform Request
         if sockfd != SOCKET_NULL {
-            #if swift(>=3.0)
-                let interfaceData = self.createInterface(interfaceName: onInterface, port: 0, family: addressFamily)
-            #else
-                let interfaceData = self.createInterface(onInterface, port: 0, family: addressFamily)
-            #endif
-
+            let interfaceData = self.createInterface(onInterface, port: 0, family: addressFamily)
 
             if interfaceData != nil {
-                #if swift(>=3.0)
-                    let interfaceAddr = unsafeBitCast(interfaceData!.bytes, to: UnsafePointer<sockaddr_in>.self)
-                #else
-                    let interfaceAddr = unsafeBitCast(interfaceData!.bytes, UnsafePointer<sockaddr_in>.self)
-                #endif
+                let iBuffer = UnsafeMutableBufferPointer<Int>.init(start: nil, count: 0)
 
+                _ = interfaceData!.copyBytes(to: iBuffer)
+
+                let interfaceAddr = unsafeBitCast(iBuffer, to: UnsafePointer<sockaddr_in>.self)
 
                 //print("--interfaceAddr: \(interfaceAddr.memory)")
-                #if swift(>=3.0)
-                    if Int32(interfaceAddr.pointee.sin_family) != groupAddr?.pointee.ai_family {
-                        throw MulticastErrors.JoinError(msg: "Multicast Error: Socket, group, and interface do not have matching IP versions")
-                    }
+                if Int32(interfaceAddr.pointee.sin_family) != groupAddr?.pointee.ai_family {
+                    throw MulticastErrors.joinError(msg: "Multicast Error: Socket, group, and interface do not have matching IP versions")
+                }
 
-                    if doMulticastJoinLeave(request: request, groupAddr: groupAddr!, interfaceAddr: interfaceAddr) != 0 {
-                        throw MulticastErrors.JoinError(msg: "Error in setsockopt() function")
-                    }
+                if doMulticastJoinLeave(request, groupAddr: groupAddr!, interfaceAddr: interfaceAddr) != 0 {
+                    throw MulticastErrors.joinError(msg: "Error in setsockopt() function")
+                }
 
-                    groupAddr?.deinitialize()
-                    groupAddr?.deallocateCapacity(1)
-                #else
-                    if Int32(interfaceAddr.memory.sin_family) != groupAddr.memory.ai_family {
-                    throw MulticastErrors.JoinError(msg: "Multicast Error: Socket, group, and interface do not have matching IP versions")
-                    }
-
-                    if doMulticastJoinLeave(request, groupAddr: groupAddr, interfaceAddr: interfaceAddr) != 0 {
-                    throw MulticastErrors.JoinError(msg: "Error in setsockopt() function")
-                    }
-
-                    groupAddr.destroy()
-                    groupAddr.dealloc(1)
-                #endif
+                groupAddr?.deinitialize()
+                groupAddr?.deallocateCapacity(1)
 
 
 
             } else {
                 //This should Never happen.. as we should have bailed already!
-                throw MulticastErrors.JoinError(msg: "Unknown interface. Must Bind to Socket First")
+                throw MulticastErrors.joinError(msg: "Unknown interface. Must Bind to Socket First")
             }
 
         } else {
@@ -242,7 +199,7 @@ internal extension AsyncUDPSocket {
 
     }
 
-    private func doMulticastJoinLeave(request: Int32, groupAddr: UnsafeMutablePointer<addrinfo>, interfaceAddr: UnsafePointer<sockaddr_in>) -> Int32 {
+    private func doMulticastJoinLeave(_ request: Int32, groupAddr: UnsafeMutablePointer<addrinfo>, interfaceAddr: UnsafePointer<sockaddr_in>) -> Int32 {
 
         //Do actual Multicast Join/Leave
         var status: Int32 = 0
@@ -256,14 +213,14 @@ internal extension AsyncUDPSocket {
                 imReq.imr_interface = interfaceAddr.pointee.sin_addr
 
             #else
-                let nativeGroup = unsafeBitCast(groupAddr.memory.ai_addr, UnsafePointer<sockaddr_in>.self)
+                let nativeGroup = unsafeBitCast(groupAddr.pointee.ai_addr, to: UnsafePointer<sockaddr_in>.self)
 
-                imReq.imr_multiaddr = nativeGroup.memory.sin_addr
-                imReq.imr_interface = interfaceAddr.memory.sin_addr
+                imReq.imr_multiaddr = nativeGroup.pointee.sin_addr
+                imReq.imr_interface = interfaceAddr.pointee.sin_addr
 
             #endif
 
-            status = setsockopt(sockfd, ASIPProto.IPV4.value, request, &imReq, UInt32(sizeof(ip_mreq)))
+            status = setsockopt(sockfd, ASIPProto.ipv4.value, request, &imReq, UInt32(sizeof(ip_mreq)))
 
         } else if self.addressFamily == AF_INET6 {
             var imReq: ipv6_mreq = ipv6_mreq()
@@ -275,14 +232,14 @@ internal extension AsyncUDPSocket {
                 imReq.ipv6mr_interface = UInt32(interfaceAddr.pointee.sin_addr.s_addr)
 
             #else
-                let nativeGroup = unsafeBitCast(groupAddr.memory.ai_addr, UnsafePointer<sockaddr_in6>.self)
+                let nativeGroup = unsafeBitCast(groupAddr.pointee.ai_addr, to: UnsafePointer<sockaddr_in6>.self)
 
-                imReq.ipv6mr_multiaddr = nativeGroup.memory.sin6_addr
-                imReq.ipv6mr_interface = UInt32(interfaceAddr.memory.sin_addr.s_addr)
+                imReq.ipv6mr_multiaddr = nativeGroup.pointee.sin6_addr
+                imReq.ipv6mr_interface = UInt32(interfaceAddr.pointee.sin_addr.s_addr)
 
             #endif
 
-            status = setsockopt(sockfd, ASIPProto.IPV6.value, request, &imReq, UInt32(sizeof(ipv6_mreq)))
+            status = setsockopt(sockfd, ASIPProto.ipv6.value, request, &imReq, UInt32(sizeof(ipv6_mreq)))
         }
 
         return status
@@ -299,11 +256,11 @@ private extension AsyncUDPSocket {
     private func preCheck() throws {
 
         guard flags.contains(.didBind) == true else {
-            throw BindErrors.AlreadyBound(msg: "Must bind a socket before joining a multicast group.")
+            throw BindErrors.alreadyBound(msg: "Must bind a socket before joining a multicast group.")
         }
 
         guard flags.contains([.connecting, .didConnect]) == false else {
-            throw BindErrors.AlreadyConnected(msg: "Cannot join a multicast group if connected")
+            throw BindErrors.alreadyConnected(msg: "Cannot join a multicast group if connected")
         }
         
     }

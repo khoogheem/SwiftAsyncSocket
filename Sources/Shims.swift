@@ -9,32 +9,25 @@
 import Foundation
 
 
-#if swift(>=3.0)
-    public typealias ASErrorType = ErrorProtocol
-#else
-    public typealias ASErrorType = ErrorType
-#endif
+public typealias as_dispatch_block_t = (Void)->Void
 
-#if swift(>=3.0)
-    public typealias ASOptionSet = OptionSet
-#else
-    public typealias ASOptionSet = OptionSetType
-#endif
+public typealias ASErrorType = ErrorProtocol
+public typealias ASOptionSet = OptionSet
 
 public enum ASSocketType {
-    case Stream
-    case DataGram
+    case stream
+    case dataGram
 
     public var value: Int32  {
 
         switch self {
-        case Stream:
+        case stream:
             #if os(Linux)
                 return Int32(SOCK_STREAM.rawValue)
             #else
                 return SOCK_STREAM
             #endif
-        case DataGram:
+        case dataGram:
             #if os(Linux)
                 return Int32(SOCK_DGRAM.rawValue)
             #else
@@ -47,28 +40,28 @@ public enum ASSocketType {
 }
 
 public enum ASIPProto {
-    case IPV4
-    case IPV6
-    case UDP
+    case ipv4
+    case ipv6
+    case udp
 
     public var value: Int32  {
 
         switch self {
-        case IPV4:
+        case ipv4:
             #if os(Linux)
                 return Int32(IPPROTO_IP)
             #else
                 return IPPROTO_IP
             #endif
 
-        case IPV6:
+        case ipv6:
             #if os(Linux)
                 return Int32(IPPROTO_IPV6)
             #else
                 return IPPROTO_IPV6
             #endif
 
-        case UDP:
+        case udp:
             #if os(Linux)
                 return Int32(IPPROTO_UDP)
             #else

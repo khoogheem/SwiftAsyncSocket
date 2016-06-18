@@ -31,41 +31,41 @@ public struct UDPSendObserver: AsyncUDPSocketObserver {
 
     private let didSendHandler: ((socket: AsyncUDPSocket, tag: Int) -> Void)?
     private let didNotSendHandler: ((socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) -> Void)?
-    private let dispatchQueue: dispatch_queue_t
+    private let dispatchQueue: DispatchQueue
 
-    private(set) public var uuid: NSUUID
+    private(set) public var uuid: UUID
 
     public init(
         didSend: ((socket: AsyncUDPSocket, tag: Int) -> Void)? = nil,
         didNotSend: ((socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) -> Void)? = nil,
-        onQueue: dispatch_queue_t = dispatch_get_main_queue()
+        onQueue: DispatchQueue = DispatchQueue.main
         ) {
 
             self.didSendHandler = didSend
             self.didNotSendHandler = didNotSend
             self.dispatchQueue = onQueue
 
-            self.uuid = NSUUID()
+            self.uuid = UUID()
     }
     
     //MARK: - Observers
 
-    public func sockDidClose(socket: AsyncUDPSocket, error: ASErrorType?) {
+    public func sockDidClose(_ socket: AsyncUDPSocket, error: ASErrorType?) {
         //No Op
     }
 
-    public func socketDidReceive(socket: AsyncUDPSocket, data: NSData, fromHost: String, onPort: UInt16) {
+    public func socketDidReceive(_ socket: AsyncUDPSocket, data: Data, fromHost: String, onPort: UInt16) {
         //No Op
     }
 
-    public func socketDidNotSend(socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) {
-        dispatch_async(dispatchQueue) { () -> Void in
+    public func socketDidNotSend(_ socket: AsyncUDPSocket, tag: Int, error: AsyncUDPSocket.SendReceiveErrors) {
+        dispatchQueue.async { () -> Void in
             self.didNotSendHandler?(socket: socket, tag: tag, error: error)
         }
     }
 
-    public func socketDidSend(socket: AsyncUDPSocket, tag: Int) {
-        dispatch_async(dispatchQueue) { () -> Void in
+    public func socketDidSend(_ socket: AsyncUDPSocket, tag: Int) {
+        dispatchQueue.async { () -> Void in
             self.didSendHandler?(socket: socket, tag: tag)
         }
     }

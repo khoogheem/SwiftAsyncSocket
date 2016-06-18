@@ -31,17 +31,17 @@ import Foundation
  */
 public func ASLog(_ message: String, functionName: String = #function, fileNameWithPath: String = #file, lineNumber: Int = #line ) {
 
-    let formatter: NSDateFormatter = NSDateFormatter()
+    let formatter: DateFormatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
 
     #if swift(>=3.0)
-        formatter.timeZone = NSTimeZone.system()
+        formatter.timeZone = TimeZone.system()
 
-        let dateString = formatter.string(from: NSDate())
+        let dateString = formatter.string(from: NSDate() as Date)
     #else
-        formatter.timeZone = NSTimeZone.systemTimeZone()
+        formatter.timeZone = TimeZone.system()
 
-        let dateString = formatter.stringFromDate(NSDate())
+        let dateString = formatter.string(from: Date())
     #endif
 
 

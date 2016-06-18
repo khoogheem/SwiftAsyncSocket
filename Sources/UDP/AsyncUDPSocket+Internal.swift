@@ -37,11 +37,11 @@ internal class AsyncUDPSendPacket {
     internal var resolvedError: AsyncUDPSocket.SendReceiveErrors?
     internal var resolvedFamily: Int32 = AF_INET
 
-    internal let buffer: NSData
-    internal let timeout: NSTimeInterval
+    internal let buffer: Data
+    internal let timeout: TimeInterval
     internal let tag: Int
 
-    internal init(data: NSData, timeout: NSTimeInterval = kAsyncUDPSocketSendNoTimeout, tag: Int = kAsyncUDPSocketSendNoTag) {
+    internal init(data: Data, timeout: TimeInterval = kAsyncUDPSocketSendNoTimeout, tag: Int = kAsyncUDPSocketSendNoTag) {
 
         self.buffer = data
         self.timeout = timeout
@@ -97,26 +97,26 @@ internal extension AsyncUDPSocket {
 
         guard isCurrentQueue == true else {
             assertionFailure("Must be dispatched on Socket Queue")
-            throw BindErrors.UnableToBind(msg: "Must be dispatched on Socket Queue")
+            throw BindErrors.unableToBind(msg: "Must be dispatched on Socket Queue")
         }
 
         guard addressFamily != AF_UNSPEC else {
-            throw BindErrors.UnknownInterface(msg: "Unknown Interface..")
+            throw BindErrors.unknownInterface(msg: "Unknown Interface..")
         }
 
         guard flags.contains(.didBind) == false else {
-            throw BindErrors.AlreadyBound(msg: "Cannot bind a socket more than once.")
+            throw BindErrors.alreadyBound(msg: "Cannot bind a socket more than once.")
         }
 
         guard flags.contains([.connecting, .didConnect]) == false else {
-            throw BindErrors.AlreadyConnected(msg: "Cannot bind after connecting. If needed, bind first, then connect")
+            throw BindErrors.alreadyConnected(msg: "Cannot bind after connecting. If needed, bind first, then connect")
         }
 
     }
 
-    internal func createInterface(interface: InterfaceType, port: UInt16, family: Int32) -> NSData? {
+    internal func createInterface(_ interface: InterfaceType, port: UInt16, family: Int32) -> Data? {
 
-        var interfaceData: NSData?
+        var interfaceData: Data?
 
         switch interface {
 
@@ -128,7 +128,7 @@ internal extension AsyncUDPSocket {
                 sockaddr.sin_port           = port.bigEndian
                 sockaddr.sin_addr.s_addr    = inet_addr(address)
 
-                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in)) as Data
 
             } else if family == AF_INET6 {
                 var sockaddr: sockaddr_in6 = sockaddr_in6()
@@ -137,7 +137,7 @@ internal extension AsyncUDPSocket {
                 sockaddr.sin6_port           = port.bigEndian
                 inet_pton(AF_INET6, address, &sockaddr.sin6_addr);
 
-                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+                interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6)) as Data
             }
 
         case .anyAddrIPV4:
@@ -147,7 +147,7 @@ internal extension AsyncUDPSocket {
             sockaddr.sin_port           = port.bigEndian
             sockaddr.sin_addr.s_addr    = INADDR_ANY.bigEndian  //INADDR_ANY
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in)) as Data
 
         case .anyAddrIPV6:
             var sockaddr: sockaddr_in6  = sockaddr_in6()
@@ -156,7 +156,7 @@ internal extension AsyncUDPSocket {
             sockaddr.sin6_port          = port.bigEndian
             sockaddr.sin6_addr          = in6addr_any
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6)) as Data
 
         case .loopbackIPV4:
             var sockaddr: sockaddr_in = sockaddr_in()
@@ -165,7 +165,7 @@ internal extension AsyncUDPSocket {
             sockaddr.sin_port           = port.bigEndian
             sockaddr.sin_addr.s_addr    = INADDR_LOOPBACK.bigEndian
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in))
+            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in)) as Data
 
         case .loopbackIPV6:
             var sockaddr: sockaddr_in6  = sockaddr_in6()
@@ -174,33 +174,28 @@ internal extension AsyncUDPSocket {
             sockaddr.sin6_port          = port.bigEndian
             sockaddr.sin6_addr          = in6addr_loopback
 
-            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6))
+            interfaceData = NSData(bytes: &sockaddr, length: sizeof(sockaddr_in6)) as Data
 
         }
 
         return interfaceData
     }
 
-    internal func boundInterface(interface: NSData) throws {
+    internal func boundInterface(_ interface: Data) throws {
 
         var status: Int32 = 0
 
-        let size = interface.length
+        let size = interface.count
 
         if self.addressFamily == AF_INET {
-            #if swift(>=3.0)
-                let sockPtr = unsafeBitCast(interface.bytes, to: UnsafePointer<sockaddr_in>.self)
-            #else
-                let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in>.self)
-            #endif
+
+            let sockPtr = unsafeBitCast((interface as NSData).bytes, to: UnsafePointer<sockaddr_in>.self)
 
             status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
+
         } else if self.addressFamily == AF_INET6 {
-            #if swift(>=3.0)
-                let sockPtr = unsafeBitCast(interface.bytes, to: UnsafePointer<sockaddr_in6>.self)
-            #else
-                let sockPtr = unsafeBitCast(interface.bytes, UnsafePointer<sockaddr_in6>.self)
-            #endif
+
+            let sockPtr = unsafeBitCast((interface as NSData).bytes, to: UnsafePointer<sockaddr_in6>.self)
 
             status = bind(sockfd, UnsafePointer<sockaddr>(sockPtr), socklen_t(size))
 
@@ -209,7 +204,7 @@ internal extension AsyncUDPSocket {
         if status == -1 {
             closeSocketError()
 
-            throw BindErrors.UnableToBind(msg: "Error in bind() function")
+            throw BindErrors.unableToBind(msg: "Error in bind() function")
         }
 
         #if swift(>=3.0)
@@ -221,7 +216,7 @@ internal extension AsyncUDPSocket {
     }
 
 
-    internal func setSocketNonBlocking(socket: Int32) -> Bool {
+    internal func setSocketNonBlocking(_ socket: Int32) -> Bool {
 
         var currentFlags = fcntl(CInt(socket), F_GETFL)
 
@@ -238,36 +233,30 @@ internal extension AsyncUDPSocket {
         return true
     }
 
-    internal func createSocket(family: Int32, options: BindOptions) throws {
+    internal func createSocket(_ family: Int32, options: BindOptions) throws {
 
         guard isCurrentQueue == true else {
             assertionFailure("Must be dispatched on Socket Queue")
-            throw BindErrors.SocketCreateError(msg: "Must be dispatched on Socket Queue")
+            throw BindErrors.socketCreateError(msg: "Must be dispatched on Socket Queue")
         }
 
         guard flags.contains(.didCreateSockets) == false else {
-            throw BindErrors.SocketsCreated(msg: "Sockets have already been created")
+            throw BindErrors.socketsCreated(msg: "Sockets have already been created")
         }
 
 
-        sockfd = socket(family, ASSocketType.DataGram.value, 0)
+        sockfd = socket(family, ASSocketType.dataGram.value, 0)
 
         if sockfd == SOCKET_NULL {
-            throw BindErrors.SocketCreateError(msg: "Error in Socket() create")
+            throw BindErrors.socketCreateError(msg: "Error in Socket() create")
         }
 
         var status: Int32 = 0
 
         //This comes in from our Network Bridge
-        #if swift(>=3.0)
-            guard setSocketNonBlocking(socket: sockfd) else {
-                throw BindErrors.SocketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
-            }
-        #else
-            guard setSocketNonBlocking(sockfd) else {
-                throw BindErrors.SocketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
-            }
-        #endif
+        guard setSocketNonBlocking(sockfd) else {
+            throw BindErrors.socketCreateError(msg: "Error enabling non-blocking IO on socket (fcntl)")
+        }
 
         //Set the Socket Options
 
@@ -275,7 +264,7 @@ internal extension AsyncUDPSocket {
         status = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuseAddr, UInt32(sizeof(socklen_t)))
         if status == -1 {
             close(sockfd)
-            throw BindErrors.SocketCreateError(msg: "Error enabling address reuse (setsockopt)")
+            throw BindErrors.socketCreateError(msg: "Error enabling address reuse (setsockopt)")
         }
 
         if options.contains(BindOptions.reusePort) {
@@ -283,7 +272,7 @@ internal extension AsyncUDPSocket {
             status = setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &reusePort, UInt32(sizeof(socklen_t)))
             if status == -1 {
                 close(sockfd)
-                throw BindErrors.SocketCreateError(msg: "Error enabling port reuse (setsockopt)")
+                throw BindErrors.socketCreateError(msg: "Error enabling port reuse (setsockopt)")
             }
         }
 
@@ -292,7 +281,7 @@ internal extension AsyncUDPSocket {
             status = setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, UInt32(sizeof(socklen_t)))
             if status == -1 {
                 close(sockfd)
-                throw BindErrors.SocketCreateError(msg: "Error enabling broadcast (setsockopt)")
+                throw BindErrors.socketCreateError(msg: "Error enabling broadcast (setsockopt)")
             }
         }
 
@@ -300,7 +289,7 @@ internal extension AsyncUDPSocket {
         status = setsockopt(sockfd, SOL_SOCKET, SO_NOSIGPIPE, &noSigPipe, UInt32(sizeof(socklen_t)))
         if status == -1 {
             close(sockfd)
-            throw BindErrors.SocketCreateError(msg: "Error disabling sigpipe (setsockopt)")
+            throw BindErrors.socketCreateError(msg: "Error disabling sigpipe (setsockopt)")
         }
 
         setupSendReceiveSources()
@@ -320,19 +309,20 @@ internal extension AsyncUDPSocket {
             return
         }
 
-        guard let newSendSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_WRITE, UInt(sockfd), 0, socketQueue) else {
+//
+        guard let newSendSource: DispatchSourceWrite = DispatchSource.write(fileDescriptor: sockfd, queue: socketQueue) else {
             close(sockfd)
             return
         }
 
-        guard let newReceiveSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_READ, UInt(sockfd), 0, socketQueue) else {
+        guard let newReceiveSource: DispatchSourceRead = DispatchSource.read(fileDescriptor: sockfd, queue: socketQueue) else {
             close(sockfd)
             return
         }
 
         //Setup event handlers
         //Send Handler
-        dispatch_source_set_event_handler(newSendSource) { () -> Void in
+        newSendSource.setEventHandler { () -> Void in
 
             #if swift(>=3.0)
                 _ = self.flags.insert(.sockCanAccept)
@@ -355,9 +345,9 @@ internal extension AsyncUDPSocket {
         }
 
         //Receive Handler
-        dispatch_source_set_event_handler(newReceiveSource) { () -> Void in
+        newReceiveSource.setEventHandler { () -> Void in
 
-            self.socketBytesAvailable = dispatch_source_get_data(newReceiveSource)
+            self.socketBytesAvailable = newReceiveSource.data
 
             if self.socketBytesAvailable > 0 {
                 self.doReceive()
@@ -371,7 +361,7 @@ internal extension AsyncUDPSocket {
         var socketFDRefCount: Int = 2
         let theSockFd = sockfd
 
-        dispatch_source_set_cancel_handler(newSendSource) { () -> Void in
+        newSendSource.setCancelHandler { () -> Void in
             socketFDRefCount -= 1
 
             if socketFDRefCount == 0 {
@@ -379,7 +369,7 @@ internal extension AsyncUDPSocket {
             }
         }
 
-        dispatch_source_set_cancel_handler(newReceiveSource) { () -> Void in
+        newReceiveSource.setCancelHandler { () -> Void in
             socketFDRefCount -= 1
 
             if socketFDRefCount == 0 {
@@ -405,7 +395,7 @@ internal extension AsyncUDPSocket {
 internal extension AsyncUDPSocket {
 
 
-    internal func closeSocketError(error: ASErrorType? = nil) {
+    internal func closeSocketError(_ error: ASErrorType? = nil) {
 
         guard isCurrentQueue == true else {
             assertionFailure("Must be dispatched on Socket Queue")
@@ -421,11 +411,7 @@ internal extension AsyncUDPSocket {
             //notify close!
             for observer in observers {
                 //Observer decides which queue it will send back on
-                #if swift(>=3.0)
-                    observer.sockDidClose(socket: self, error: error)
-                #else
-                    observer.sockDidClose(self, error: error)
-                #endif
+                observer.sockDidClose(self, error: error)
             }
         }
 
@@ -443,9 +429,9 @@ internal extension AsyncUDPSocket {
 
             if let sSource = sendSource,
             let rSource = receiveSource {
-                dispatch_source_cancel(sSource)
+                sSource.cancel()
 
-                dispatch_source_cancel(rSource)
+                rSource.cancel()
 
                 //Make sure they are not paused...
                 resumeSendSource()

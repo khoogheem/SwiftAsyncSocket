@@ -40,14 +40,14 @@
 		046AFFFD1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
 		046AFFFE1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
 		046AFFFF1D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AFFF51D0DA1E70089D41B /* AsyncUDPSocket+Internal.swift */; };
+		048469871D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048469831D15CC990074D988 /* SwiftAsyncSocketTests.swift */; };
+		048469881D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048469831D15CC990074D988 /* SwiftAsyncSocketTests.swift */; };
+		048469891D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048469831D15CC990074D988 /* SwiftAsyncSocketTests.swift */; };
 		04A970C21C1E31B3006ACBC7 /* SwiftAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		04A970CF1C1E76D7006ACBC7 /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */; };
 		04F04A5B1C1A519900B94EFD /* SwiftAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04F04A621C1A519A00B94EFD /* SwiftAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F04A571C1A519900B94EFD /* SwiftAsyncSocket.framework */; };
-		04F04A671C1A519A00B94EFD /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */; };
 		04F04A801C1A51FF00B94EFD /* SwiftAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F04A761C1A51FE00B94EFD /* SwiftAsyncSocket.framework */; };
 		04F04A8D1C1A522900B94EFD /* SwiftAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		04F04A8E1C1A522D00B94EFD /* SwiftAsyncSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */; };
 		04F04A9E1C1A52BB00B94EFD /* SwiftAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F04A941C1A52BB00B94EFD /* SwiftAsyncSocket.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,11 +102,10 @@
 		046AFFFA1D0DA1E70089D41B /* AsyncUDPSocketObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUDPSocketObserver.swift; sourceTree = "<group>"; };
 		046AFFFB1D0DA1E70089D41B /* UDPReceiveObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPReceiveObserver.swift; sourceTree = "<group>"; };
 		046AFFFC1D0DA1E70089D41B /* UDPSendObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDPSendObserver.swift; sourceTree = "<group>"; };
+		048469831D15CC990074D988 /* SwiftAsyncSocketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAsyncSocketTests.swift; sourceTree = "<group>"; };
 		04F04A571C1A519900B94EFD /* SwiftAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F04A5A1C1A519900B94EFD /* SwiftAsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftAsyncSocket.h; sourceTree = "<group>"; };
 		04F04A611C1A519A00B94EFD /* SwiftAsyncSocketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAsyncSocketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAsyncSocketTests.swift; sourceTree = "<group>"; };
-		04F04A681C1A519A00B94EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04F04A761C1A51FE00B94EFD /* SwiftAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F04A7F1C1A51FF00B94EFD /* SwiftAsyncSocketiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAsyncSocketiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F04A941C1A52BB00B94EFD /* SwiftAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,13 +176,21 @@
 			path = UDP;
 			sourceTree = "<group>";
 		};
+		048469811D15CC990074D988 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				048469831D15CC990074D988 /* SwiftAsyncSocketTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		04F04A4D1C1A519900B94EFD = {
 			isa = PBXGroup;
 			children = (
 				046458E51CFCD61A005B0CDE /* LICENSE */,
 				046458E61CFCD61A005B0CDE /* README.md */,
 				04F04A591C1A519900B94EFD /* Sources */,
-				04F04A651C1A519A00B94EFD /* SwiftAsyncSocketTests */,
+				048469811D15CC990074D988 /* Tests */,
 				04F04A581C1A519900B94EFD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -211,15 +218,6 @@
 				046AFFF41D0DA1E70089D41B /* UDP */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		04F04A651C1A519A00B94EFD /* SwiftAsyncSocketTests */ = {
-			isa = PBXGroup;
-			children = (
-				04F04A661C1A519A00B94EFD /* SwiftAsyncSocketTests.swift */,
-				04F04A681C1A519A00B94EFD /* Info.plist */,
-			);
-			path = SwiftAsyncSocketTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,14 +366,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Kevin A. Hoogheem";
 				TargetAttributes = {
 					04F04A561C1A519900B94EFD = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					04F04A601C1A519A00B94EFD = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					04F04A751C1A51FE00B94EFD = {
 						CreatedOnToolsVersion = 7.2;
@@ -481,7 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04F04A671C1A519A00B94EFD /* SwiftAsyncSocketTests.swift in Sources */,
+				048469871D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,7 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04F04A8E1C1A522D00B94EFD /* SwiftAsyncSocketTests.swift in Sources */,
+				048469881D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,7 +533,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A970CF1C1E76D7006ACBC7 /* SwiftAsyncSocketTests.swift in Sources */,
+				048469891D15CC990074D988 /* SwiftAsyncSocketTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,13 +647,13 @@
 		04F04A6C1C1A519A00B94EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -663,19 +663,20 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}/SwiftModules";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		04F04A6D1C1A519A00B94EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -684,6 +685,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}/SwiftModules";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -691,10 +694,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftAsyncSocketTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -702,23 +706,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftAsyncSocketTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		04F04A881C1A51FF00B94EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -736,13 +742,13 @@
 		04F04A891C1A51FF00B94EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -752,6 +758,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}/SwiftModules";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -761,7 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = SwiftAsyncSocketTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketiOSTests;
@@ -774,12 +781,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = SwiftAsyncSocketTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -787,12 +795,12 @@
 		04F04AA61C1A52BB00B94EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -810,12 +818,12 @@
 		04F04AA71C1A52BB00B94EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -824,6 +832,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}/SwiftModules";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VALIDATE_PRODUCT = YES;
@@ -833,7 +842,7 @@
 		04F04AA91C1A52BB00B94EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = SwiftAsyncSocketTest/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketTvOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -845,11 +854,12 @@
 		04F04AAA1C1A52BB00B94EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = SwiftAsyncSocketTest/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.hoogheem.SwiftAsyncSocketTvOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VALIDATE_PRODUCT = YES;
 			};

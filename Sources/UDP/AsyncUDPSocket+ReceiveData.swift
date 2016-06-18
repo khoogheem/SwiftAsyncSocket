@@ -42,17 +42,17 @@ public extension AsyncUDPSocket {
 
         var errorCode: SendReceiveErrors?
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             if self.flags.contains(UdpSocketFlags.receiveContinous).boolValue == true {
-                errorCode = SendReceiveErrors.AlreadyReceiving(msg: "Already Receiving Data.. Must Pause before calling receiveOnce")
+                errorCode = SendReceiveErrors.alreadyReceiving(msg: "Already Receiving Data.. Must Pause before calling receiveOnce")
                 return
             }
 
             if self.flags.contains(UdpSocketFlags.receiveOnce).boolValue == false {
 
                 if self.flags.contains(UdpSocketFlags.didCreateSockets).boolValue == false {
-                    errorCode = SendReceiveErrors.NotBound(msg: "You must bind the Socket prior to Receiving")
+                    errorCode = SendReceiveErrors.notBound(msg: "You must bind the Socket prior to Receiving")
                     return
                 }
 
@@ -65,7 +65,7 @@ public extension AsyncUDPSocket {
                 #endif
 
                 //Continue to receive
-                dispatch_async(self.socketQueue, { () -> Void in
+                self.socketQueue.asynchronously(execute: { () -> Void in
                     self.doReceive()
                 })
             }
@@ -74,7 +74,7 @@ public extension AsyncUDPSocket {
         if isCurrentQueue == true {
             block()
         } else {
-            dispatch_async(socketQueue, block)
+            socketQueue.asynchronously(execute: block)
         }
 
         if let errors = errorCode {
@@ -89,12 +89,12 @@ public extension AsyncUDPSocket {
 
         var errorCode: SendReceiveErrors?
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             if self.flags.contains(UdpSocketFlags.receiveContinous).boolValue == false {
 
                 if self.flags.contains(UdpSocketFlags.didCreateSockets).boolValue == false {
-                    errorCode = SendReceiveErrors.NotBound(msg: "You must bind the Socket prior to Receiving")
+                    errorCode = SendReceiveErrors.notBound(msg: "You must bind the Socket prior to Receiving")
                     return
                 }
 
@@ -106,7 +106,7 @@ public extension AsyncUDPSocket {
                 #endif
 
                 //Continue to receive
-                dispatch_async(self.socketQueue, { () -> Void in
+                self.socketQueue.asynchronously(execute: { () -> Void in
                     self.doReceive()
                 })
             }
@@ -115,7 +115,7 @@ public extension AsyncUDPSocket {
         if isCurrentQueue == true {
             block()
         } else {
-            dispatch_sync(socketQueue, block)
+            socketQueue.sync(execute: block)
         }
 
         if let errors = errorCode {
@@ -131,7 +131,7 @@ public extension AsyncUDPSocket {
      */
     public func pauseReceiving() {
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             self.flags.remove(UdpSocketFlags.receiveOnce)
             self.flags.remove(UdpSocketFlags.receiveContinous)
@@ -144,7 +144,7 @@ public extension AsyncUDPSocket {
         if isCurrentQueue == true {
             block()
         } else {
-            dispatch_async(socketQueue, block)
+            socketQueue.asynchronously(execute: block)
         }
     }
     
@@ -161,7 +161,7 @@ internal extension AsyncUDPSocket {
 
             if let source = receiveSource {
 
-                dispatch_suspend(source)
+                source.suspend()
 
                 #if swift(>=3.0)
                     _ = flags.insert(.recvSourceSuspend)
@@ -179,7 +179,7 @@ internal extension AsyncUDPSocket {
 
             if let source = receiveSource {
 
-                dispatch_resume(source)
+                source.resume()
 
                 flags.remove(.recvSourceSuspend)
             }
@@ -208,18 +208,19 @@ internal extension AsyncUDPSocket {
         //Socket IO
         var socketAddress = sockaddr_storage()
         var socketAddressLength = socklen_t(sizeof(sockaddr_storage.self))
-        #if swift(>=3.0)
-            let response = [UInt8](repeating: 0, count: maxReceiveSize)
-        #else
-            let response = [UInt8](count: maxReceiveSize, repeatedValue: 0)
-        #endif
+        let response = [UInt8](repeating: 0, count: maxReceiveSize)
 
-        guard let source = self.receiveSource else { return }
-        let UDPSocket = Int32(dispatch_source_get_handle(source))
+        var UDPSocket: UInt
+
+        if let source = self.receiveSource {
+            UDPSocket = source.handle
+        } else {
+            return
+        }
 
 
         let bytesRead = withUnsafeMutablePointer(&socketAddress) {
-            recvfrom(UDPSocket, UnsafeMutablePointer<Void>(response), response.count, 0, UnsafeMutablePointer($0), &socketAddressLength)
+            recvfrom(Int32(UDPSocket), UnsafeMutablePointer<Void>(response), response.count, 0, UnsafeMutablePointer($0), &socketAddressLength)
         }
 
 
@@ -298,11 +299,7 @@ internal extension AsyncUDPSocket {
 
         for observer in observers {
             //Observer decides which queue it will send back on
-            #if swift(>=3.0)
-                observer.socketDidReceive(socket: self, data: data, fromHost: fromHost, onPort: port)
-            #else
-                observer.socketDidReceive(self, data: data, fromHost: fromHost, onPort: port)
-            #endif
+            observer.socketDidReceive(self, data: data as Data, fromHost: fromHost, onPort: port)
         }
     }
 }

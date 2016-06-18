@@ -37,28 +37,28 @@ public class AsyncUDPSocket {
 
     //Public
     public enum BindErrors: ASErrorType {
-        case AlreadyBound(msg: String)
-        case AlreadyConnected(msg: String)
-        case UnknownInterface(msg: String)
-        case UnableToBind(msg: String)
-        case SocketsCreated(msg: String)
-        case SocketCreateError(msg: String)
+        case alreadyBound(msg: String)
+        case alreadyConnected(msg: String)
+        case unknownInterface(msg: String)
+        case unableToBind(msg: String)
+        case socketsCreated(msg: String)
+        case socketCreateError(msg: String)
     }
 
     public enum MulticastErrors: ASErrorType {
-        case JoinError(msg: String)
+        case joinError(msg: String)
     }
 
     public enum SendReceiveErrors: ASErrorType {
-        case AlreadyReceiving(msg: String)
-        case NotBound(msg: String)
-        case ResolveIssue(msg: String)
-        case SendIssue(msg: String)
-        case SendTimout(msg: String)
+        case alreadyReceiving(msg: String)
+        case notBound(msg: String)
+        case resolveIssue(msg: String)
+        case sendIssue(msg: String)
+        case sendTimout(msg: String)
     }
 
     public enum SocketCloseErrors: ASErrorType {
-        case Error(msg: String)
+        case error(msg: String)
     }
 
     /**
@@ -91,30 +91,25 @@ public class AsyncUDPSocket {
 
     //sock
 
-    internal var socketQueue: dispatch_queue_t
+    internal var socketQueue: DispatchQueue
 
     internal var sockfd: Int32
 
-    internal var sendSource: dispatch_source_t?
+    internal var sendSource: DispatchSourceWrite?
     
-    internal var receiveSource: dispatch_source_t?
+    internal var receiveSource: DispatchSourceRead?
 
-    internal var sendTimer: dispatch_source_t?
+    internal var sendTimer: DispatchSourceTimer?
 
     internal let dispatchQueueKey = "UDPSocketQueue"
 
-    #if swift(>=3.0)
-        static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, to: UnsafePointer<Void>.self)     // some unique pointer
-        private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
-            unsafeBitCast(self, to: UnsafeMutablePointer<Void>.self)   // pointer to self
-        }()
-    #else
-        static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, UnsafePointer<Void>.self)     // some unique pointer
-        private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
-            unsafeBitCast(self, UnsafeMutablePointer<Void>.self)   // pointer to self
-        }()
-    #endif
-    
+//    static var udpQueueIDKey = unsafeBitCast(AsyncUDPSocket.self, to: UnsafePointer<Void>.self)     // some unique pointer
+    static var udpQueueIDKey: DispatchSpecificKey<UnsafeMutablePointer<Void>> = DispatchSpecificKey()
+
+    private lazy var udpQueueID: UnsafeMutablePointer<Void> = { [unowned self] in
+        unsafeBitCast(self, to: UnsafeMutablePointer<Void>.self)   // pointer to self
+    }()
+
     public init() {
 
         self.flags = UdpSocketFlags()
@@ -126,22 +121,22 @@ public class AsyncUDPSocket {
 
         self.currentSend = nil
 
-        socketQueue = dispatch_queue_create(dispatchQueueKey, DISPATCH_QUEUE_SERIAL)
+        socketQueue = DispatchQueue(label: dispatchQueueKey, attributes: DispatchQueueAttributes.serial)
 
-        dispatch_queue_set_specific(socketQueue, AsyncUDPSocket.udpQueueIDKey, udpQueueID, nil)
+        socketQueue.setSpecific(key: AsyncUDPSocket.udpQueueIDKey, value: udpQueueID)
 
     }
 
 
     deinit {
 
-        dispatch_sync(socketQueue) { () -> Void in
+        socketQueue.sync { () -> Void in
             self.closeSocketError()
         }
     }
 
     internal var isCurrentQueue: Bool {
-        return dispatch_get_specific(AsyncUDPSocket.udpQueueIDKey) == udpQueueID
+        return DispatchQueue.getSpecific(key: AsyncUDPSocket.udpQueueIDKey) == udpQueueID
     }
 
 }
@@ -170,13 +165,13 @@ public extension AsyncUDPSocket {
      
      - parameter observer: AsyncUDPSocketObserver object
     */
-    public func addObserver(observer: AsyncUDPSocketObserver) {
+    public func addObserver(_ observer: AsyncUDPSocketObserver) {
 
         self.observers.append(observer)
 
     }
 
-    public func removeObserver(observer: AsyncUDPSocketObserver) {
+    public func removeObserver(_ observer: AsyncUDPSocketObserver) {
 
         #if swift(>=3.0)
             for (idx, obsvr) in observers.enumerated() {
@@ -185,9 +180,9 @@ public extension AsyncUDPSocket {
                 }
             }
         #else
-            for (idx, obsvr) in observers.enumerate() {
+            for (idx, obsvr) in observers.enumerated() {
                 if obsvr == observer {
-                    observers.removeAtIndex(idx)
+                    observers.remove(at: idx)
                 }
             }
         #endif
@@ -203,12 +198,13 @@ public extension AsyncUDPSocket {
     */
     public func closeSocket() {
 
-        let block: dispatch_block_t = {
+
+        let block: as_dispatch_block_t = {
 
             self.closeSocketError()
         }
 
-        dispatch_sync(socketQueue, block)
+        socketQueue.sync(execute: block)
     }
 
     /**
@@ -216,7 +212,7 @@ public extension AsyncUDPSocket {
     */
     public func closeSocketAfterSend() {
 
-        let block: dispatch_block_t = {
+        let block: as_dispatch_block_t = {
 
             #if swift(>=3.0)
                 _ = self.flags.insert(.closeAfterSend)
@@ -225,16 +221,11 @@ public extension AsyncUDPSocket {
             #endif
 
             if self.currentSend == nil && self.sendQueue.count == 0 {
-                #if swift(>=3.0)
-                    self.closeSocketError(error: SocketCloseErrors.Error(msg: "Closing with nothing more to Send"))
-                #else
-                    self.closeSocketError(SocketCloseErrors.Error(msg: "Closing with nothing more to Send"))
-                #endif
-
+                self.closeSocketError(SocketCloseErrors.error(msg: "Closing with nothing more to Send"))
             }
         }
 
-        dispatch_sync(socketQueue, block)
+        socketQueue.sync(execute: block)
     }
 
 
@@ -252,12 +243,8 @@ public extension AsyncUDPSocket {
 
         var errorCode: BindErrors?
 
-        let block: dispatch_block_t = {
-            #if swift(>=3.0)
-                self.addressFamily = self.determineAFType(interface: _interface)
-            #else
-                self.addressFamily = self.determineAFType(_interface)
-            #endif
+        let block: as_dispatch_block_t = {
+            self.addressFamily = self.determineAFType(interface: _interface)
 
             do {
                 try self.preBind()
@@ -268,26 +255,17 @@ public extension AsyncUDPSocket {
                 return
             }
 
-            #if swift(>=3.0)
-                let interfaceData = self.createInterface(interfaceName: _interface, port: port, family: self.addressFamily)
-            #else
-                let interfaceData = self.createInterface(_interface, port: port, family: self.addressFamily)
-            #endif
-
+            let interfaceData = self.createInterface(_interface, port: port, family: self.addressFamily)
 
             if interfaceData == nil {
-                let error = BindErrors.UnknownInterface(msg: "Unknown interface. Specify valid interface by name (e.g. 'anyaddr', 'en0') or IP address.")
+                let error = BindErrors.unknownInterface(msg: "Unknown interface. Specify valid interface by name (e.g. 'anyaddr', 'en0') or IP address.")
                 ASLog("Error: \(error)")
                 errorCode = error
                 return
             }
 
             do {
-                #if swift(>=3.0)
-                    try self.createSocket(family: self.addressFamily, options: option)
-                #else
-                    try self.createSocket(self.addressFamily, options: option)
-                #endif
+                try self.createSocket(self.addressFamily, options: option)
 
             } catch{
                 ASLog("Error: \(error)")
@@ -296,11 +274,7 @@ public extension AsyncUDPSocket {
             }
 
             do {
-                #if swift(>=3.0)
-                    try self.boundInterface(interface: interfaceData!)
-                #else
-                    try self.boundInterface(interfaceData!)
-                #endif
+                try self.boundInterface(interfaceData!)
 
             } catch {
                 ASLog("Error: \(error)")
@@ -313,7 +287,7 @@ public extension AsyncUDPSocket {
         if isCurrentQueue == true {
             block()
         }else {
-            dispatch_sync(socketQueue, block)
+            socketQueue.sync(execute: block)
         }
 
         if let error = errorCode {
@@ -333,7 +307,7 @@ private extension AsyncUDPSocket {
     private func determineAFType(interface: InterfaceType) -> Int32 {
         switch interface {
         case .ipAddress(let address):
-            return address.characters.split(":").count > 1 ? AF_INET6 : AF_INET
+            return address.characters.split(separator: ":").count > 1 ? AF_INET6 : AF_INET
         case .anyAddrIPV4:
             return AF_INET
         case .anyAddrIPV6:
