@@ -91,7 +91,7 @@ class SwiftAsyncSocketTests: XCTestCase {
 
         do {
             #if swift(>=3.0)
-                try UDP.bindTo(54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
+                try UDP.bindTo(port: 54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
             #else
                 try UDP.bindTo(54022, interface: InterfaceType.ipAddress(address: "2002:3289:d71c::1610:9fff:fed6:475d"))
             #endif
